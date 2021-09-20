@@ -8,27 +8,11 @@
 
 //////////// Global Variables ///////////////////////////
 
-let cardR, cardP, cardS, title, rockFrame, paperFrame, scissorsFrame, playButton, howToPlayButton;
+let cardR, cardP, cardS, xCardR, yCardR, xCardP, yCardP, xCardS, yCardS, cardWidthRock, cardHR, cardWP, cardHP, cardWS, cardHS, title, rockFrame, paperFrame, scissorsFrame, playButton, howToPlayButton;
 
-let state = "start";
+let state = "play";
 
-let cardWidthRock = 150;
-let cardHR = 200;
 
-let cardWP = 150;
-let cardHP = 200;
-
-let cardWS = 150;
-let cardHS = 200;
-
-let xCardR = 150;
-let yCardR = 250;
-
-let xCardP = 350;
-let yCardP = 250;
-
-let xCardS = 550;
-let yCardS = 250;
 
 let playButtonWidth = 200;
 let howToPlayButtonWidth = 200;
@@ -44,26 +28,42 @@ let howToPlayButtonHover = false;
 //////////// Load Images //////////////////////////
 
 function preload() {
-  title = loadImage("title.png");
-
-  cardR = loadImage("cardR.png");
-  cardP = loadImage("cardP.png");
-  cardS = loadImage("cardS.png");
-
-  rockFrame = loadImage("rockFrame.png");
-  paperFrame = loadImage("paperFrame.png");
-  scissorsFrame = loadImage("scissorsFrame.png");
+  title = loadImage("assets/title.png");
   
-  playButton = loadImage("playButton.png");
-  howToPlayButton = loadImage("howToPlayButton.png");
+  cardR = loadImage("assets/cardRock.png");
+  cardP = loadImage("assets/cardPaper.png");
+  cardS = loadImage("assets/cardScissors.png");
+  
+  rockFrame = loadImage("assets/frameRock.png");
+  paperFrame = loadImage("assets/framePaper.png");
+  scissorsFrame = loadImage("assets/frameScissors.png");
+  
+  playButton = loadImage("assets/playButton.png");
+  howToPlayButton = loadImage("assets/howToPlayButton.png");
   
 }
 
 /////////////////// Setup //////////////////////////
 
 function setup() {
-  createCanvas(700, 500);
+  createCanvas(windowWidth, windowHeight);
   imageMode(CENTER);
+  xCardR = width/10;
+  yCardR = height/2;
+  
+  xCardP = width/2;
+  yCardP = height/2;
+  
+  xCardS = width/1.12;
+  yCardS = height/2;
+  cardWidthRock = width/4;
+  cardHR = 200;
+  
+  cardWP = 150;
+  cardHP = 200;
+  
+  cardWS = 150;
+  cardHS = 200;
 }
 
 function draw() {
@@ -147,12 +147,6 @@ function displayHoverPlayButton() {
   image(howToPlayButton, width/2, height/1.7, playButtonWidth, playButtonHeight);
 }
 
-function hoverPlayButton() {
-  if (playButtonHover) {
-    !displayPlayButton();
-    displayHoverPlayButton(); 
-  }
-}
 ///////////// Game = Play Functions /////////////////////
 
 function hoverCards() {
