@@ -12,8 +12,6 @@ let cardR, cardP, cardS, xCardR, yCardR, xCardP, yCardP, xCardS, yCardS, cardWid
 
 let state = "play";
 
-
-
 let playButtonWidth = 200;
 let howToPlayButtonWidth = 200;
 let playButtonHeight = 100;
@@ -56,14 +54,14 @@ function setup() {
   
   xCardS = width/1.12;
   yCardS = height/2;
-  cardWidthRock = width/4;
-  cardHR = 200;
+  cardWidthRock = width/6;
+  cardHR = height/2.2;
   
-  cardWP = 150;
-  cardHP = 200;
+  cardWP = width/6;
+  cardHP = height/2.2;
   
-  cardWS = 150;
-  cardHS = 200;
+  cardWS = width/6;
+  cardHS = height/2.2;
 }
 
 function draw() {
