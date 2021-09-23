@@ -11,28 +11,30 @@
 let cardR, cardP, cardS, xCardR, yCardR, xCardP, yCardP, xCardS, yCardS, cardWidthRock, cardHR, cardWP, cardHP, cardWS, cardHS, title, cardFrame, playButton, howToPlayButton;
 let playButtonWidth, howToPlayButtonWidth, playButtonHeight, howToPlayButtonHeight, xHowToPlayButton, yHowToPlayButton, xPlayButton, yPlayButton;
 let hoverHowToPlay, hoverPlay;
-let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain;
+let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight;
 
 let state = "start";
 
-let flashFrame = "firstFlash";
-let firstFlash = 1000;
-let secondFlash = 1000;
-let thirdFlash = 3000;
-let switchTime = 0; 
+let dxCardR = 3;
 
 let rockHover = false;
 let paperHover = false;
 let scissorsHover = false;
 let playButtonHover = false;
 let howToPlayButtonHover = false;
+let HowPlayMenu = false;
 
 //////////// Load Images //////////////////////////
 
 function preload() {
   title = loadImage("assets/title.png");
   menuButton = loadImage("assets/menuButton.png");
+  howToPlayMenu = loadImage("assets/howPlayMenu.png");
+  exitMenu = loadImage("assets/exitMenuButton.png");
   
+  rockCallout = loadImage("assets/rockCallout.png");
+  paperCallout = loadImage("assets/paperCallout.png");
+  scissorsCallout = loadImage("assets/scissorsCallout.png");
   
   cardR = loadImage("assets/cardRock.png");
   cardP = loadImage("assets/cardPaper.png");
@@ -46,7 +48,9 @@ function preload() {
   hoverPlay = loadImage("assets/hoverPlayButton.png");
   hoverHowToPlay = loadImage("assets/hoverHowToPlayButton.png");
 
-
+  playAgain = loadImage("assets/playAgainButton.png");
+  youLose = loadImage("assets/youLose.png");
+  youWin = loadImage("assets/youWin.png");
 }
 
 /////////////////// Setup //////////////////////////
@@ -82,6 +86,11 @@ function setup() {
 
   playButtonHeight = height/5;
   howToPlayButtonHeight = height/5;
+
+  xExitMenu = width/+25;
+  yExitMenu = height/+25;
+  exitMenuWidth = width/20;
+  exitMenuHeight = height/20;
 }
 
 function draw() {
@@ -100,10 +109,17 @@ function gameState() {
 
     hoverStartButtons();
     pressPlay();
-    
+    pressHowToPlay();
   }
-  if (state === "play") {
-    hoverCards();
+  else if (state === "howToPlayMenu") {
+    displayStartTitle();
+    displayhowToMenu();  
+    displayExitMenu();
+
+    pressExitHowToPlayMenu();
+  }
+  else if (state === "play") {
+    
     displayCardR();
     displayCardP();
     displayCardS();
@@ -112,6 +128,11 @@ function gameState() {
     displayRockFrame();
     displayPaperFrame();
     displayScissorsFrame();
+
+    hoverCards();
+  }
+  else if (state === "choseRock") {
+    displayCardR();
   }
 } 
 
@@ -150,6 +171,15 @@ function displayScissorsFrame() {
     image(cardFrame, xCardS, yCardS, cardWS + 105, cardHS + 155);
   }
 }
+
+//////////////// Menu functions /////////////////////////
+function displayhowToMenu() {
+  image(howToPlayMenu, width/2, height/2, width/2, height/1.5);
+}
+function displayExitMenu() {
+  image(exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight);
+}
+
 ///////////// Game = Start Functions /////////////////////
 
 function displayPlayButton() {
@@ -185,7 +215,7 @@ function hoverStartButtons() {
   }
 }
 
-
+////////////// Chose card functions ////////////////////
 function hoverCards() {
   if (
     mouseX > xCardR - cardWidthRock / 2 &&
@@ -194,6 +224,9 @@ function hoverCards() {
     mouseY < yCardR + cardHR / 2
   ) {
     rockHover = true;
+    if (mouseIsPressed) {
+      state = "choseRock";
+    }
   } 
   else {
     rockHover = false;
@@ -206,7 +239,10 @@ function hoverCards() {
     mouseY < yCardP + cardHP / 2
   ) {
     paperHover = true;
-  } 
+    if (mouseIsPressed) {
+      state = "chosePaper";
+    } 
+  }
   else {
     paperHover = false;
   }
@@ -218,9 +254,12 @@ function hoverCards() {
     mouseY < yCardS + cardHS / 2
   ) {
     scissorsHover = true;
-  } 
-  else {
-    scissorsHover = false;
+    if (mouseIsPressed) {
+      state = "choseScissors";
+    } 
+    else {
+      scissorsHover = false;
+    }
   }
 }
 
@@ -231,31 +270,13 @@ function pressPlay() {
     state = "play";
   }
 }
-function chooseRock() {
-  if (
-    mouseX > xCardR - cardWidthRock / 2 &&
-    mouseX < xCardR + cardWidthRock / 2 &&
-    mouseY > yCardR - cardHR / 2 &&
-    mouseY < yCardR + cardHR / 2 &&
-    mouseIsPressed
-  ) {
-    state = "choseRock";
+function pressHowToPlay() {
+  if (mouseX > xHowToPlayButton - howToPlayButtonWidth/2 && mouseX < xHowToPlayButton + howToPlayButtonWidth/2 && mouseY > yHowToPlayButton - howToPlayButtonHeight/2 && mouseY < yHowToPlayButton + howToPlayButtonHeight/2 && mouseIsPressed) {
+    state = "howToPlayMenu";
   }
-  if (
-    mouseX > xCardP - cardWP / 2 &&
-    mouseX < xCardP + cardWP / 2 &&
-    mouseY > yCardP - cardHP / 2 &&
-    mouseY < yCardP + cardHP / 2
-  ) {
-    state = "chosePaper";
+}
+function pressExitHowToPlayMenu() {
+  if (mouseX > xExitMenu - exitMenuWidth/2 && mouseX < xExitMenu + exitMenuWidth/2 && mouseY > yExitMenu - exitMenuHeight/2 && mouseY < yExitMenu + exitMenuHeight/2 && mouseIsPressed) {
+    state = "start";
   }
-
-  if (
-    mouseX > xCardS - cardWS / 2 &&
-    mouseX < xCardS + cardWS / 2 &&
-    mouseY > yCardS - cardHS / 2 &&
-    mouseY < yCardS + cardHS / 2
-  ) {
-    state = "choseScissors";
-  } 
 }
