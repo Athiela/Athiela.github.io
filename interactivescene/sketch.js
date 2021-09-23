@@ -11,6 +11,7 @@
 let cardR, cardP, cardS, xCardR, yCardR, xCardP, yCardP, xCardS, yCardS, cardWidthRock, cardHR, cardWP, cardHP, cardWS, cardHS, title, cardFrame, playButton, howToPlayButton;
 let playButtonWidth, howToPlayButtonWidth, playButtonHeight, howToPlayButtonHeight, xHowToPlayButton, yHowToPlayButton, xPlayButton, yPlayButton;
 let hoverHowToPlay, hoverPlay;
+let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain;
 
 let state = "start";
 
@@ -30,6 +31,8 @@ let howToPlayButtonHover = false;
 
 function preload() {
   title = loadImage("assets/title.png");
+  menuButton = loadImage("assets/menuButton.png");
+  
   
   cardR = loadImage("assets/cardRock.png");
   cardP = loadImage("assets/cardPaper.png");
@@ -42,6 +45,8 @@ function preload() {
   
   hoverPlay = loadImage("assets/hoverPlayButton.png");
   hoverHowToPlay = loadImage("assets/hoverHowToPlayButton.png");
+
+
 }
 
 /////////////////// Setup //////////////////////////
