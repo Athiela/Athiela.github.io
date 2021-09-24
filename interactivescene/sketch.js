@@ -11,7 +11,7 @@
 let cardR, cardP, cardS, xCardR, yCardR, xCardP, yCardP, xCardS, yCardS, cardWidthRock, cardHR, cardWP, cardHP, cardWS, cardHS, title, cardFrame, playButton, howToPlayButton;
 let playButtonWidth, howToPlayButtonWidth, playButtonHeight, howToPlayButtonHeight, xHowToPlayButton, yHowToPlayButton, xPlayButton, yPlayButton;
 let hoverHowToPlay, hoverPlay;
-let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight;
+let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight, startRound;
 
 let state = "start";
 
@@ -51,6 +51,7 @@ function preload() {
   playAgain = loadImage("assets/playAgainButton.png");
   youLose = loadImage("assets/youLose.png");
   youWin = loadImage("assets/youWin.png");
+  startRound = loadImage("assets/startRoundButton");
 }
 
 /////////////////// Setup //////////////////////////
@@ -111,6 +112,9 @@ function gameState() {
     pressPlay();
     pressHowToPlay();
   }
+  else if (state === "round1") {
+    display
+  }
   else if (state === "howToPlayMenu") {
     displayStartTitle();
     displayhowToMenu();  
@@ -122,6 +126,9 @@ function gameState() {
     displayCardR();
     displayCardP();
     displayCardS();
+    displayRockFrame();
+    displayPaperFrame();
+    displayScissorsFrame();
     
     displayTitle();
     hoverCards();
@@ -220,17 +227,19 @@ function hoverStartButtons() {
 function hoverCards() {
   if (mouseX > xCardR - cardWidthRock / 2 && mouseX < xCardR + cardWidthRock / 2 && mouseY > yCardR - cardHR / 2 && mouseY < yCardR + cardHR / 2) {
     rockHover = true;
-    if (mouseIsPressed) {
+    if (mouseIsPressed){
       state = "choseRock";
     }
+  }
   else {
     rockHover = false;
   }
   if (mouseX > xCardP - cardWP / 2 && mouseX < xCardP + cardWP / 2 && mouseY > yCardP - cardHP / 2 && mouseY < yCardP + cardHP / 2) {
     paperHover = true;
-    if (mouseIsPressed) {
-      state = "chosePaper";
-  } 
+    // if (mouseIsPressed){
+    //   state = "choseRock";
+    // }
+  }
   else {
     paperHover = false;
   }
