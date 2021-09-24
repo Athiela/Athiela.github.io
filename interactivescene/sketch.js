@@ -119,20 +119,21 @@ function gameState() {
     pressExitHowToPlayMenu();
   }
   else if (state === "play") {
-    
     displayCardR();
     displayCardP();
     displayCardS();
     
     displayTitle();
-    displayRockFrame();
-    displayPaperFrame();
-    displayScissorsFrame();
-
     hoverCards();
   }
   else if (state === "choseRock") {
     displayCardR();
+  }
+  else if (state === "chosePaper") {
+    displayCardP();
+  }
+  else if (state === "choseScissors") {
+    displayCardS();
   }
 } 
 
@@ -217,49 +218,30 @@ function hoverStartButtons() {
 
 ////////////// Chose card functions ////////////////////
 function hoverCards() {
-  if (
-    mouseX > xCardR - cardWidthRock / 2 &&
-    mouseX < xCardR + cardWidthRock / 2 &&
-    mouseY > yCardR - cardHR / 2 &&
-    mouseY < yCardR + cardHR / 2
-  ) {
+  if (mouseX > xCardR - cardWidthRock / 2 && mouseX < xCardR + cardWidthRock / 2 && mouseY > yCardR - cardHR / 2 && mouseY < yCardR + cardHR / 2) {
     rockHover = true;
     if (mouseIsPressed) {
       state = "choseRock";
     }
-  } 
   else {
     rockHover = false;
   }
-
-  if (
-    mouseX > xCardP - cardWP / 2 &&
-    mouseX < xCardP + cardWP / 2 &&
-    mouseY > yCardP - cardHP / 2 &&
-    mouseY < yCardP + cardHP / 2
-  ) {
+  if (mouseX > xCardP - cardWP / 2 && mouseX < xCardP + cardWP / 2 && mouseY > yCardP - cardHP / 2 && mouseY < yCardP + cardHP / 2) {
     paperHover = true;
     if (mouseIsPressed) {
       state = "chosePaper";
-    } 
-  }
+  } 
   else {
     paperHover = false;
   }
-
-  if (
-    mouseX > xCardS - cardWS / 2 &&
-    mouseX < xCardS + cardWS / 2 &&
-    mouseY > yCardS - cardHS / 2 &&
-    mouseY < yCardS + cardHS / 2
-  ) {
+  if (mouseX > xCardS - cardWS / 2 && mouseX < xCardS + cardWS / 2 && mouseY > yCardS - cardHS / 2 && mouseY < yCardS + cardHS / 2) {
     scissorsHover = true;
     if (mouseIsPressed) {
       state = "choseScissors";
-    } 
-    else {
-      scissorsHover = false;
     }
+  } 
+  else {
+    scissorsHover = false;
   }
 }
 
