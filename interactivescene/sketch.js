@@ -12,6 +12,8 @@ let cardR, cardP, cardS, xCardR, yCardR, xCardP, yCardP, xCardS, yCardS, cardWid
 let playButtonWidth, howToPlayButtonWidth, playButtonHeight, howToPlayButtonHeight, xHowToPlayButton, yHowToPlayButton, xPlayButton, yPlayButton;
 let hoverHowToPlay, hoverPlay;
 let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight, startRound;
+let hoverExit, hoverKeybind, keybind, keybindMenu, loseCount, pressEnter, roundOne, roundTwo, roundThree, winCount, winLoseOne, winLoseTwo, winLoseThree, winLoseZero;
+
 
 let state = "start";
 
@@ -51,7 +53,22 @@ function preload() {
   playAgain = loadImage("assets/playAgainButton.png");
   youLose = loadImage("assets/youLose.png");
   youWin = loadImage("assets/youWin.png");
-  startRound = loadImage("assets/startRoundButton");
+  startRound = loadImage("assets/startRoundButton.png");
+
+  hoverExit = loadImage("assets/hoverExitButton.png");
+  hoverKeybind = loadImage("assets/hoverKeybindsButton.png");
+  keybind = loadImage("assets/keybindButton.png");
+  keybindMenu = loadImage("assets/keybindMenu.png");
+  loseCount = loadImage("assets/loseCount.png");
+  pressEnter = loadImage("assets/pressEnter.png");
+  roundOne = loadImage("assets/round1.png");
+  roundTwo = loadImage("assets/round2.png");
+  roundThree = loadImage("assets/round3.png");
+  winCount = loadImage("assets/winCount.png");
+  winLoseOne = loadImage("assets/winLoseOne.png");
+  winLoseTwo = loadImage("assets/winLoseTwo.png");
+  winLoseThree = loadImage("assets/winLoseThree.png");
+  winLoseZero = loadImage("assets/winLoseZero.png");
 }
 
 /////////////////// Setup //////////////////////////
@@ -112,9 +129,6 @@ function gameState() {
     pressPlay();
     pressHowToPlay();
   }
-  else if (state === "round1") {
-    display
-  }
   else if (state === "howToPlayMenu") {
     displayStartTitle();
     displayhowToMenu();  
@@ -132,6 +146,10 @@ function gameState() {
     
     displayTitle();
     hoverCards();
+
+    pressRockCard();
+    pressPaperCard();
+    pressScissorsCard();
   }
   else if (state === "choseRock") {
     displayCardR();
@@ -224,30 +242,22 @@ function hoverStartButtons() {
 }
 
 ////////////// Chose card functions ////////////////////
+
 function hoverCards() {
   if (mouseX > xCardR - cardWidthRock / 2 && mouseX < xCardR + cardWidthRock / 2 && mouseY > yCardR - cardHR / 2 && mouseY < yCardR + cardHR / 2) {
     rockHover = true;
-    if (mouseIsPressed){
-      state = "choseRock";
-    }
   }
   else {
     rockHover = false;
   }
   if (mouseX > xCardP - cardWP / 2 && mouseX < xCardP + cardWP / 2 && mouseY > yCardP - cardHP / 2 && mouseY < yCardP + cardHP / 2) {
     paperHover = true;
-    // if (mouseIsPressed){
-    //   state = "choseRock";
-    // }
   }
   else {
     paperHover = false;
   }
   if (mouseX > xCardS - cardWS / 2 && mouseX < xCardS + cardWS / 2 && mouseY > yCardS - cardHS / 2 && mouseY < yCardS + cardHS / 2) {
     scissorsHover = true;
-    if (mouseIsPressed) {
-      state = "choseScissors";
-    }
   } 
   else {
     scissorsHover = false;
@@ -269,5 +279,23 @@ function pressHowToPlay() {
 function pressExitHowToPlayMenu() {
   if (mouseX > xExitMenu - exitMenuWidth/2 && mouseX < xExitMenu + exitMenuWidth/2 && mouseY > yExitMenu - exitMenuHeight/2 && mouseY < yExitMenu + exitMenuHeight/2 && mouseIsPressed) {
     state = "start";
+  }
+}
+
+function pressRockCard() {
+  if (mouseX > xCardR - cardWidthRock / 2 && mouseX < xCardR + cardWidthRock / 2 && mouseY > yCardR - cardHR / 2 && mouseY < yCardR + cardHR / 2 && mouseIsPressed) {
+    state = "choseRock";
+  }
+}
+
+function pressPaperCard() {
+  if (mouseX > xCardP - cardWP / 2 && mouseX < xCardP + cardWP / 2 && mouseY > yCardP - cardHP / 2 && mouseY < yCardP + cardHP / 2 && mouseIsPressed) {
+    state = "chosePaper";
+  }
+}
+
+function pressScissorsCard() {
+  if (mouseX > xCardS - cardWS / 2 && mouseX < xCardS + cardWS / 2 && mouseY > yCardS - cardHS / 2 && mouseY < yCardS + cardHS / 2 && mouseIsPressed) {
+    state = "choseScissors";
   }
 }
