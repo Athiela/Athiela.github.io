@@ -1,23 +1,20 @@
 // Rock paper scissors game
 // Athiela A.
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Date 09/26/2021
 
 
 //////////// Global Variables ///////////////////////////
 
-let cardR, cardP, cardS, xCardR, yCardR, xCardP, yCardP, xCardS, yCardS, cardWidthRock, cardHR, cardWP, cardHP, cardWS, cardHS, title, cardFrame, playButton, howToPlayButton;
+let cardR, cardP, cardS, xCardRock, yCardRock, xCardPaper, yCardPaper, xCardScissors, yCardScissors, cardWidthRock, cardHeightRock, cardWidthPaper, cardHeightPaper, cardWidthScissors, cardHeightScissors, title, cardFrame, playButton, howToPlayButton;
 let playButtonWidth, howToPlayButtonWidth, playButtonHeight, howToPlayButtonHeight, xHowToPlayButton, yHowToPlayButton, xPlayButton, yPlayButton;
-let hoverHowToPlay, hoverPlay;
+let hoverHowToPlay, hoverPlay, startTitle, pressEsc;
 let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight, startRound;
-let hoverExit, hoverKeybind, keybind, keybindMenu, loseCount, pressEnter, roundOne, roundTwo, roundThree, winCount, winLoseOne, winLoseTwo, winLoseThree, winLoseZero;
-
+let exitButton, hoverExit, hoverKeybind, keybind, keybindMenu, pressEnter;
+let xExitButton, yExitButton, exitButtonWidth, exitButtonHeight, xKeybind, yKeybind, keybindWidth, keybindHeight, xMenu, yMenu, menuWidth, menuHeight, areYouSureExit, otherPressEnter, youChoseRock, youChosePaper, youChoseScissors;
 
 let state = "start";
 
-let dxCardR = 3;
+let result = ["win", "lose"];
 
 let rockHover = false;
 let paperHover = false;
@@ -29,14 +26,12 @@ let HowPlayMenu = false;
 //////////// Load Images //////////////////////////
 
 function preload() {
+
+  startTitle = loadImage("assets/startTitle.png");
   title = loadImage("assets/title.png");
   menuButton = loadImage("assets/menuButton.png");
   howToPlayMenu = loadImage("assets/howPlayMenu.png");
   exitMenu = loadImage("assets/exitMenuButton.png");
-  
-  rockCallout = loadImage("assets/rockCallout.png");
-  paperCallout = loadImage("assets/paperCallout.png");
-  scissorsCallout = loadImage("assets/scissorsCallout.png");
   
   cardR = loadImage("assets/cardRock.png");
   cardP = loadImage("assets/cardPaper.png");
@@ -53,22 +48,19 @@ function preload() {
   playAgain = loadImage("assets/playAgainButton.png");
   youLose = loadImage("assets/youLose.png");
   youWin = loadImage("assets/youWin.png");
-  startRound = loadImage("assets/startRoundButton.png");
 
   hoverExit = loadImage("assets/hoverExitButton.png");
   hoverKeybind = loadImage("assets/hoverKeybindsButton.png");
   keybind = loadImage("assets/keybindButton.png");
   keybindMenu = loadImage("assets/keybindMenu.png");
-  loseCount = loadImage("assets/loseCount.png");
   pressEnter = loadImage("assets/pressEnter.png");
-  roundOne = loadImage("assets/round1.png");
-  roundTwo = loadImage("assets/round2.png");
-  roundThree = loadImage("assets/round3.png");
-  winCount = loadImage("assets/winCount.png");
-  winLoseOne = loadImage("assets/winLoseOne.png");
-  winLoseTwo = loadImage("assets/winLoseTwo.png");
-  winLoseThree = loadImage("assets/winLoseThree.png");
-  winLoseZero = loadImage("assets/winLoseZero.png");
+  exitButton = loadImage("assets/exitButton.png");
+  areYouSureExit = loadImage("assets/areYouSureExit.png");
+  otherPressEnter = loadImage("assets/otherPressEnter.png");
+  youChoseRock = loadImage("assets/youChoseRock.png");
+  youChosePaper = loadImage("assets/youChosePaper.png");
+  youChoseScissors = loadImage("assets/youChoseScissors.png");
+  pressEsc = loadImage("assets/pressEscExit.png");
 }
 
 /////////////////// Setup //////////////////////////
@@ -76,22 +68,22 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   imageMode(CENTER);
-  xCardR = width/4;
-  yCardR = height/2;
+  xCardRock = width/4;
+  yCardRock = height/2;
   
-  xCardP = width/2;
-  yCardP = height/2;
+  xCardPaper = width/2;
+  yCardPaper = height/2;
   
-  xCardS = width/1.3;
-  yCardS = height/2;
+  xCardScissors = width/1.3;
+  yCardScissors = height/2;
   cardWidthRock = width/6;
-  cardHR = height/2.2;
+  cardHeightRock = height/2.2;
   
-  cardWP = width/6;
-  cardHP = height/2.2;
+  cardWidthPaper = width/6;
+  cardHeightPaper = height/2.2;
   
-  cardWS = width/6;
-  cardHS = height/2.2;
+  cardWidthScissors = width/6;
+  cardHeightScissors = height/2.2;
 
   xHowToPlayButton = width/2;
   yHowToPlayButton = height/1.3;
@@ -105,10 +97,25 @@ function setup() {
   playButtonHeight = height/5;
   howToPlayButtonHeight = height/5;
 
-  xExitMenu = width/+25;
-  yExitMenu = height/+25;
-  exitMenuWidth = width/20;
-  exitMenuHeight = height/20;
+  xExitMenu = width/20;
+  yExitMenu = height/12;
+  exitMenuWidth = width/15;
+  exitMenuHeight = height/10;
+
+  xExitButton = width/2;
+  yExitButton = height/2;
+  exitButtonWidth = width/4;
+  exitButtonHeight = height/5;
+
+  xKeybind = width/2;
+  yKeybind = height/1.3;
+  keybindWidth = width/4;
+  keybindHeight = height/5;
+
+  xMenu = width/20;   
+  yMenu = height/12;
+  menuWidth = width/15;
+  menuHeight = height/10;
 }
 
 function draw() {
@@ -117,10 +124,15 @@ function draw() {
   
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 /////////////// Game State //////////////////////////////
 
 function gameState() {
   if (state === "start") {
+    restoreResult();
     displayPlayButton();
     displayHowToPlayButton();
     displayStartTitle();
@@ -133,34 +145,87 @@ function gameState() {
     displayStartTitle();
     displayhowToMenu();  
     displayExitMenu();
-
+    
     pressExitHowToPlayMenu();
   }
+  else if (state === "pressEnter") {
+    displayPressEnter();
+    pressKeyEnter();
+  }
   else if (state === "play") {
-    displayCardR();
-    displayCardP();
-    displayCardS();
+    displayCardRock();
+    displayCardPaper();
+    displayCardScissors();
     displayRockFrame();
     displayPaperFrame();
     displayScissorsFrame();
-    
+    displayMenuButton();
+
     displayTitle();
     hoverCards();
-
+    
     pressRockCard();
     pressPaperCard();
     pressScissorsCard();
+    pressMenu();
+  }
+  else if (state === "menu") {
+    displayExitButton();
+    displayHoverExitButton();
+    displayKeybindButton();
+    displayHoverKeybindButton();
+    
+    hoverMenuButtons();
+    displayStartTitle();
+    
+    pressExitButton();
+    pressKeybindButton();
+  }
+  else if (state === "areYouSureExit") {
+    displayAreYouSureExit();
+    pressEnterToExit();
+  }
+  else if (state === "keybind") {
+    displayKeybindMenu();
+    pressExitKeybindMenu();
   }
   else if (state === "choseRock") {
-    displayCardR();
+    displayCardRock();
+    displayYouChoseRock();
+    displayOtherPressEnter();
+    changeCardRockPos();
+    alreadyChoseCard();
   }
   else if (state === "chosePaper") {
-    displayCardP();
+    displayCardPaper();
+    displayYouChosePaper();
+    displayOtherPressEnter();
+    alreadyChoseCard();
   }
   else if (state === "choseScissors") {
-    displayCardS();
+    displayCardScissors();
+    displayYouChoseScissors();
+    displayOtherPressEnter();
+    changeCardScissorsPos();
+    alreadyChoseCard();
   }
-} 
+  else if (state === "results") {
+    randomResult();
+
+  }
+  else if (state === "youWin") {
+    displayYouWin();
+    displayPressEsc();
+    pressEscExit();
+    restoreCardPos();
+  }
+  else if (state === "youLose") {
+    displayYouLose();
+    displayPressEsc();
+    pressEscExit();
+    restoreCardPos();
+  }
+}
 
 ////////// Display image functions /////////////////
 
@@ -168,45 +233,42 @@ function displayTitle() {
   image(title, width / 2, height /7, 200, 100);
 }
 
-function displayCardR() {
-  image(cardR, xCardR, yCardR, cardWidthRock, cardHR);
+function displayCardRock() {
+  image(cardR, xCardRock, yCardRock, cardWidthRock, cardHeightRock);
 }
 
-function displayCardP() {
-  image(cardP, xCardP, yCardP, cardWP, cardHP);
+function displayCardPaper() {
+  image(cardP, xCardPaper, yCardPaper, cardWidthPaper, cardHeightPaper);
 }
 
-function displayCardS() {
-  image(cardS, xCardS, yCardS, cardWS, cardHS);
+function displayCardScissors() {
+  image(cardS, xCardScissors, yCardScissors, cardWidthScissors, cardHeightScissors);
 }
 
 function displayRockFrame() {
   if (rockHover === true) {
-    image(cardFrame, xCardR, yCardR, cardWidthRock + 105, cardHR + 155);
+    image(cardFrame, xCardRock, yCardRock, cardWidthRock + 105, cardHeightRock + 155);
   }
 }
 
 function displayPaperFrame() {
   if (paperHover === true) {
-    image(cardFrame, xCardP, yCardP, cardWP + 105, cardHP + 155);
+    image(cardFrame, xCardPaper, yCardPaper, cardWidthPaper + 105, cardHeightPaper + 155);
   }
 }
 
 function displayScissorsFrame() {
   if (scissorsHover === true) {
-    image(cardFrame, xCardS, yCardS, cardWS + 105, cardHS + 155);
+    image(cardFrame, xCardScissors, yCardScissors, cardWidthScissors + 105, cardHeightScissors + 155);
   }
 }
 
-//////////////// Menu functions /////////////////////////
 function displayhowToMenu() {
   image(howToPlayMenu, width/2, height/2, width/2, height/1.5);
 }
 function displayExitMenu() {
-  image(exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight);
+  image(exitMenu, width/20, height/12, width/15, height/10);
 }
-
-///////////// Game = Start Functions /////////////////////
 
 function displayPlayButton() {
   image(playButton, xPlayButton, yPlayButton, playButtonWidth, playButtonHeight);
@@ -215,13 +277,73 @@ function displayHowToPlayButton() {
   image(howToPlayButton, xHowToPlayButton, yHowToPlayButton, howToPlayButtonWidth, howToPlayButtonHeight);
 }
 function displayStartTitle() {
-  image(title, width / 2, height / 4, 400, 200);
+  image(startTitle, width / 2, height / 4, 400, 200);
 }
 function displayHoverPlay() {
   image(hoverPlay, xPlayButton, yPlayButton, playButtonWidth, playButtonHeight);
 }
 function displayHoverHowToPlay() {
   image(hoverHowToPlay, xHowToPlayButton, yHowToPlayButton, howToPlayButtonWidth, howToPlayButtonHeight);
+}
+
+function displayMenuButton() {
+  image(menuButton, xMenu, yMenu, menuWidth, menuHeight);
+}
+
+function displayExitButton() {
+  image(exitButton, xExitButton, yExitButton, exitButtonWidth, exitButtonHeight);
+}
+
+function displayHoverExitButton() {
+  image(hoverExit, xExitButton, yExitButton, exitButtonWidth, exitButtonHeight);
+}
+
+function displayKeybindButton() {
+  image(keybind, xKeybind, yKeybind, keybindWidth, keybindHeight);
+}
+
+function displayHoverKeybindButton() {
+  image(hoverKeybind, xKeybind, yKeybind, keybindWidth, keybindHeight);
+}
+
+function displayKeybindMenu() {
+  image(keybindMenu, width/2, height/2, width/2, height/1.5);
+}
+
+function displayPressEnter() {
+  image(pressEnter, width /2, height /2, width/3, height/3);
+}
+
+function displayAreYouSureExit() {
+  image(areYouSureExit, width/2, height/2, width/2, height/1.5);
+}
+
+function displayOtherPressEnter() {
+  image(otherPressEnter, width/2, height/1.3, width/10, height/6);
+}
+
+function displayYouChoseRock() {
+  image(youChoseRock, width/2, yCardScissors/2.5, width/10, height/6);
+}
+
+function displayYouChosePaper() {
+  image(youChosePaper, width/2, yCardScissors/2.5, width/10, height/6);
+}
+
+function displayYouChoseScissors() {
+  image(youChoseScissors, width/2, yCardScissors/2.5, width/10, height/6);
+}
+
+function displayYouWin() {
+  image(youWin, width/2, height/7, width/2.5, height/2.5);
+}
+
+function displayYouLose() {
+  image(youLose, width/2, height/7, width/2.5, height/2.5);
+}
+
+function displayPressEsc() {
+  image(pressEsc, width /2, height /2, width/3, height/3);
 }
 
 ///////////// Game = Play Functions /////////////////////
@@ -241,22 +363,37 @@ function hoverStartButtons() {
   }
 }
 
-////////////// Chose card functions ////////////////////
+function hoverMenuButtons() {
+  if (mouseX > xExitButton - exitButtonWidth/2 && mouseX < xExitButton + exitButtonWidth/2 && mouseY > yExitButton - exitButtonHeight/2 && mouseY < yExitButton + exitButtonHeight/2) {
+    displayHoverExitButton();
+  }
+  else {
+    displayExitButton();
+  }
+  if (mouseX > xKeybind - keybindWidth/2 && mouseX < xKeybind + keybindWidth/2 && mouseY > yKeybind - keybindHeight/2 && mouseY < yKeybind + keybindHeight/2) {
+    displayHoverKeybindButton();
+  }
+  else {
+    displayKeybindButton();
+  }
+}
+
+////////////// Chose card/Change functions ////////////////////
 
 function hoverCards() {
-  if (mouseX > xCardR - cardWidthRock / 2 && mouseX < xCardR + cardWidthRock / 2 && mouseY > yCardR - cardHR / 2 && mouseY < yCardR + cardHR / 2) {
+  if (mouseX > xCardRock - cardWidthRock / 2 && mouseX < xCardRock + cardWidthRock / 2 && mouseY > yCardRock - cardHeightRock / 2 && mouseY < yCardRock + cardHeightRock / 2) {
     rockHover = true;
   }
   else {
     rockHover = false;
   }
-  if (mouseX > xCardP - cardWP / 2 && mouseX < xCardP + cardWP / 2 && mouseY > yCardP - cardHP / 2 && mouseY < yCardP + cardHP / 2) {
+  if (mouseX > xCardPaper - cardWidthPaper / 2 && mouseX < xCardPaper + cardWidthPaper / 2 && mouseY > yCardPaper - cardHeightPaper / 2 && mouseY < yCardPaper + cardHeightPaper / 2) {
     paperHover = true;
   }
   else {
     paperHover = false;
   }
-  if (mouseX > xCardS - cardWS / 2 && mouseX < xCardS + cardWS / 2 && mouseY > yCardS - cardHS / 2 && mouseY < yCardS + cardHS / 2) {
+  if (mouseX > xCardScissors - cardWidthScissors / 2 && mouseX < xCardScissors + cardWidthScissors / 2 && mouseY > yCardScissors - cardHeightScissors / 2 && mouseY < yCardScissors + cardHeightScissors / 2) {
     scissorsHover = true;
   } 
   else {
@@ -264,11 +401,52 @@ function hoverCards() {
   }
 }
 
+function changeCardRockPos() {
+  xCardRock = width/2;
+  yCardRock = height/2;
+}
+
+function changeCardScissorsPos() {
+  xCardScissors = width/2;
+  yCardScissors = height/2;
+}
+
+function restoreCardPos() {
+  xCardRock = width/4;
+  yCardRock = height/2;
+
+  xCardPaper = width/2;
+  yCardPaper = height/2;
+
+  xCardScissors = width/1.3;
+  yCardScissors = height/2;
+  cardWidthRock = width/6;
+  cardHeightRock = height/2.2;
+
+  cardWidthPaper = width/6;
+  cardHeightPaper = height/2.2;
+}
+
+function restoreResult() {
+  result = ["win", "lose"];
+}
+
+function randomResult() {
+  if (state === "results") {
+    result = random(result);
+    if (result === "win") {
+      state = "youWin";
+    }
+    if (result === "lose") {
+      state = "youLose";
+    }
+  }
+}
 ////////////// Press Buttons ///////////////
 
 function pressPlay() {
   if (mouseX > xPlayButton - playButtonWidth/2 && mouseX < xPlayButton + playButtonWidth/2 && mouseY > yPlayButton - playButtonHeight/2 && mouseY < yPlayButton + playButtonHeight/2 && mouseIsPressed) {
-    state = "play";
+    state = "pressEnter";
   }
 }
 function pressHowToPlay() {
@@ -277,25 +455,73 @@ function pressHowToPlay() {
   }
 }
 function pressExitHowToPlayMenu() {
-  if (mouseX > xExitMenu - exitMenuWidth/2 && mouseX < xExitMenu + exitMenuWidth/2 && mouseY > yExitMenu - exitMenuHeight/2 && mouseY < yExitMenu + exitMenuHeight/2 && mouseIsPressed) {
+  if (mouseX > xExitMenu - exitMenuWidth/2 && mouseX < xExitMenu + exitMenuWidth/2 && mouseY > yExitMenu - exitMenuHeight/2 && mouseY < yExitMenu + exitMenuHeight/2 && mouseIsPressed || keyIsDown(27)) {
     state = "start";
   }
 }
 
 function pressRockCard() {
-  if (mouseX > xCardR - cardWidthRock / 2 && mouseX < xCardR + cardWidthRock / 2 && mouseY > yCardR - cardHR / 2 && mouseY < yCardR + cardHR / 2 && mouseIsPressed) {
+  if (mouseX > xCardRock - cardWidthRock / 2 && mouseX < xCardRock + cardWidthRock / 2 && mouseY > yCardRock - cardHeightRock / 2 && mouseY < yCardRock + cardHeightRock / 2 && mouseIsPressed || keyIsDown(49)) {
     state = "choseRock";
   }
 }
 
 function pressPaperCard() {
-  if (mouseX > xCardP - cardWP / 2 && mouseX < xCardP + cardWP / 2 && mouseY > yCardP - cardHP / 2 && mouseY < yCardP + cardHP / 2 && mouseIsPressed) {
+  if (mouseX > xCardPaper - cardWidthPaper / 2 && mouseX < xCardPaper + cardWidthPaper / 2 && mouseY > yCardPaper - cardHeightPaper / 2 && mouseY < yCardPaper + cardHeightPaper / 2 && mouseIsPressed || keyIsDown(50)) {
     state = "chosePaper";
   }
 }
 
 function pressScissorsCard() {
-  if (mouseX > xCardS - cardWS / 2 && mouseX < xCardS + cardWS / 2 && mouseY > yCardS - cardHS / 2 && mouseY < yCardS + cardHS / 2 && mouseIsPressed) {
+  if (mouseX > xCardScissors - cardWidthScissors / 2 && mouseX < xCardScissors + cardWidthScissors / 2 && mouseY > yCardScissors - cardHeightScissors / 2 && mouseY < yCardScissors + cardHeightScissors / 2 && mouseIsPressed || keyIsDown(51)) {
     state = "choseScissors";
+  }
+}
+
+function pressMenu() {
+  if (mouseX > xMenu - menuWidth/2 && mouseX < xMenu + menuWidth/2 && mouseY > yMenu - menuHeight/2 && mouseY < yMenu + menuHeight/2 && mouseIsPressed) {
+    state = "menu";
+  }
+}
+
+function pressExitButton() {
+  if (mouseX > xExitButton - exitButtonWidth/2 && mouseX < xExitButton + exitButtonWidth/2 && mouseY > yExitButton - exitButtonHeight/2 && mouseY < yExitButton + exitButtonHeight/2 && mouseIsPressed) {
+    state = "areYouSureExit";
+  }
+}
+
+function pressKeybindButton() {
+  if (mouseX > xKeybind - keybindWidth/2 && mouseX < xKeybind + keybindWidth/2 && mouseY > yKeybind - keybindHeight/2 && mouseY < yKeybind + keybindHeight/2 && mouseIsPressed) {
+    state = "keybind";
+  }
+}
+
+function pressKeyEnter() {
+  if (keyIsDown(13)) {
+    state = "play";
+  }
+}
+
+function pressEnterToExit() {
+  if (keyIsDown(13)) {
+    state = "start";
+  }
+}
+
+function pressExitKeybindMenu() {
+  if (keyIsDown(27)) {
+    state = "play";
+  }
+}
+
+function alreadyChoseCard() {
+  if (keyIsDown(13)) {
+    state = "results";
+  }
+}
+
+function pressEscExit() {
+  if (keyIsDown(27)) {
+    state = "start";
   }
 }
