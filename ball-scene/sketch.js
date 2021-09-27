@@ -14,6 +14,7 @@ function draw() {
   background(220);
   displayBall();
   moveBall();
+  checkIfBallTouchingMouse();
 }
 
 function mousePressed() {
@@ -57,6 +58,15 @@ function moveBall() {
 
     theBall.xTime += theBall.timeChange;
     theBall.yTime += theBall.timeChange;
+  }
+}
+
+function checkIfBallTouchingMouse() {
+  for (let i=ballArray.length-1; i>=0; i--) {
+    let howFarAway = dist(ballArray[i].x, ballArray[i].y, mouseX, mouseY);
+    if (howFarAway < ballArray[i].radius) {
+      ballArray.splice(i,1);
+    }
   }
 }
 
