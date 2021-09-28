@@ -22,14 +22,16 @@ function draw() {
 }
 
 function mousePressed() {
-  let cellX = Math.floor(mouseX/cellSize);
-  let cellY = Math.floor(mouseY/cellSize);
-
-  swap(cellX, cellY);
-  swap(cellX, cellY-1);
-  swap(cellX, cellY+1);
-  swap(cellX-1, cellY);
-  swap(cellX+1, cellY);
+  if (mouseX<= width && mouseY<=height) {
+    let cellX = Math.floor(mouseX/cellSize);
+    let cellY = Math.floor(mouseY/cellSize);
+  
+    swap(cellX, cellY);
+    swap(cellX, cellY-1);
+    swap(cellX, cellY+1);
+    swap(cellX-1, cellY);
+    swap(cellX+1, cellY);
+  }
 }
 
 function swap(x, y) {
