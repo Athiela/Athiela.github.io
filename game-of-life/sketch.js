@@ -1,6 +1,6 @@
 // Grid Neighbours
 
-let gridDimensions = 15;
+let gridDimensions = 30;
 let grid;
 let cellSize;
 let autoPlay = false;
@@ -20,7 +20,7 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
-  if (autoPlay) {
+  if (autoPlay && frameCount % 10 === 0) {
     update();
   }
 }
