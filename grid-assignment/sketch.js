@@ -48,3 +48,18 @@ function createEmptyGrid(howLarge) {
   }
   return emptyArray;
 }
+
+function handleKeys() {
+  if (keyIsDown(87)){ //w
+    playerY -= speed;
+  }
+  if (keyIsDown(83)){ //s
+    playerY += speed;
+  }
+  if (keyIsDown(65)){ //a
+    playerX -= speed;
+  }
+  if (keyIsDown(68)){ //d
+    playerX += speed;
+  }
+}
