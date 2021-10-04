@@ -12,6 +12,7 @@ let playerX = 0;
 let playerY = 0;
 
 function setup() {
+  imageMode(CENTER);
   if (windowWidth > windowHeight) {
     createCanvas(windowHeight, windowHeight);
   }
@@ -30,9 +31,7 @@ function displayGrid() {
   let cellSize = width/gridSize;
   for (let y=0; y<grid.length; y++) {
     for (let x=0; x<grid[y].length; x++) {
-      if (grid[y][x] === 0) {
-        fill("white");
-      }
+      fill("white");
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
   }
