@@ -1,38 +1,51 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Escape Room
 
-let gridSize = 8;
+let ground, spriteFront, spriteBack, spriteLeft, spriteRight;
+
+let cellSize;
+let gridSize = 4;
 let grid;
-let speed = 3;
 let playerX = 0;
 let playerY = 0;
 
+function preload() {
+  ground = loadImage("assets/floor.png");
+  spriteFront = loadImage("assets/spriteFront.png");
+  spriteBack = loadImage("assets/spriteBack.png");
+  spriteLeft = loadImage("assets/spriteLeft.png");
+  spriteRight = loadImage("assets/spriteRight.png");
+}
+
 function setup() {
-  imageMode(CENTER);
   if (windowWidth > windowHeight) {
     createCanvas(windowHeight, windowHeight);
   }
   else {
     createCanvas(windowWidth, windowWidth);
   }
+
   grid = createEmptyGrid(gridSize);
+  cellSize = width/gridSize;
+  grid[playerX][playerY] = spriteFront;
 }
 
 function draw() {
   background(220);
   displayGrid();
+  keyPressed();
 }
 
+//////////////////////////////////////////////////////////////////////
+
+
+
+////////////////// display functions /////////////////////////////////
+
+
 function displayGrid() {
-  let cellSize = width/gridSize;
   for (let y=0; y<grid.length; y++) {
     for (let x=0; x<grid[y].length; x++) {
-      fill("white");
-      rect(x*cellSize, y*cellSize, cellSize, cellSize);
+      image(ground, x*cellSize, y*cellSize, cellSize, cellSize);
     }
   }
 }
@@ -48,17 +61,36 @@ function createEmptyGrid(howLarge) {
   return emptyArray;
 }
 
-function handleKeys() {
-  if (keyIsDown(87)){ //w
-    playerY -= speed;
+//////////////////// character movement ///////////////////////////////
+
+function keyPressed() {
+  if (key === "s") {
+    image(spriteFront, playerX, playerY, cellSize/2, cellSize/2);
+    tryMovingTo(playerX, playerY+1);
   }
-  if (keyIsDown(83)){ //s
-    playerY += speed;
+  else if (key === "w") {
+    image(spriteBack, playerX, playerY, cellSize/2, cellSize/2);
+    tryMovingTo(playerX, playerY-1);
   }
-  if (keyIsDown(65)){ //a
-    playerX -= speed;
+  else if (key === "d") {
+    image(spriteRight, playerX, playerY, cellSize/2, cellSize/2);
+    tryMovingTo(playerX+1, playerY);
   }
-  if (keyIsDown(68)){ //d
-    playerX += speed;
+  else if (key === "a") {
+    image(spriteLeft, playerX, playerY, cellSize/2, cellSize/2);
+    tryMovingTo(playerX-1, playerY);
+  }
+}
+
+function tryMovingTo(newX, newY) {
+  // make sure you're on the grid
+  if (newX >= 0 && newY >= 0 && newX < gridSize && newY < gridSize) {
+    // check if new spot if empty
+    if (grid[newY][newX] === 0) {
+      grid[playerY][playerX] = 0;
+      playerX = newX;
+      playerY = newY;
+      grid[newY][newX] = spriteFront;
+    }
   }
 }
