@@ -1,12 +1,15 @@
 // Escape Room
 
-let ground, spriteFront, spriteBack, spriteLeft, spriteRight;
+let ground, spriteWidth, spriteHeight, spriteFront, spriteBack, spriteLeft, spriteRight, spritePosition;
+
+let state = "start";
 
 let cellSize;
 let gridSize = 4;
 let grid;
-let playerX = 0;
-let playerY = 0;
+let playerX = 10;
+let playerY = 10;
+let speed = 5;
 
 function preload() {
   ground = loadImage("assets/floor.png");
@@ -26,21 +29,34 @@ function setup() {
 
   grid = createEmptyGrid(gridSize);
   cellSize = width/gridSize;
-  grid[playerX][playerY] = spriteFront;
+
+  spriteWidth = width/8;
+  spriteHeight = height/8;
 }
 
 function draw() {
   background(220);
   displayGrid();
+  // characterMovement();
   keyPressed();
 }
 
-//////////////////////////////////////////////////////////////////////
+/////////////////// game state //////////////////////////////
 
-
+function gameState() {
+  if (state === "start") {
+    displayGrid();
+    // characterMovement();
+    keyPressed();
+  }
+  else if (state === "play") {
+    displayGrid();
+    // characterMovement();
+    keyPressed();
+  }
+}
 
 ////////////////// display functions /////////////////////////////////
-
 
 function displayGrid() {
   for (let y=0; y<grid.length; y++) {
@@ -63,34 +79,53 @@ function createEmptyGrid(howLarge) {
 
 //////////////////// character movement ///////////////////////////////
 
+// function characterMovement() {
+//   if (keyIsDown(87)){ //w
+//     image(spriteBack, playerY, playerX, spriteWidth, spriteHeight);
+//     playerY -= speed;
+//   }
+//   if (keyIsDown(83)){ //s
+//     image(spriteFront, playerY, playerX, spriteWidth, spriteHeight);
+//     playerY += speed;
+//   }
+//   if (keyIsDown(65)){ //a
+//     image(spriteLeft, playerY, playerX, spriteWidth, spriteHeight);
+//     playerX -= speed;
+//   }
+//   if (keyIsDown(68)){ //d
+//     image(spriteRight, playerY, playerX, spriteWidth, spriteHeight);
+//     playerX += speed;
+//   }
+// }
+
 function keyPressed() {
   if (key === "s") {
-    image(spriteFront, playerX, playerY, cellSize/2, cellSize/2);
-    tryMovingTo(playerX, playerY+1);
+    playerY += playerY+cellSize;
+    image(spriteFront, playerY, playerX, spriteWidth, spriteHeight);
   }
   else if (key === "w") {
-    image(spriteBack, playerX, playerY, cellSize/2, cellSize/2);
-    tryMovingTo(playerX, playerY-1);
+    playerY += playerY-cellSize;
+    image(spriteBack, playerY, playerX, spriteWidth, spriteHeight);
   }
   else if (key === "d") {
-    image(spriteRight, playerX, playerY, cellSize/2, cellSize/2);
-    tryMovingTo(playerX+1, playerY);
+    playerX += playerX+cellSize;
+    image(spriteRight, playerY, playerX, spriteWidth, spriteHeight);
   }
   else if (key === "a") {
-    image(spriteLeft, playerX, playerY, cellSize/2, cellSize/2);
-    tryMovingTo(playerX-1, playerY);
+    playerX += playerX-cellSize;
+    image(spriteLeft, playerY, playerX, spriteWidth, spriteHeight);
   }
 }
 
-function tryMovingTo(newX, newY) {
-  // make sure you're on the grid
-  if (newX >= 0 && newY >= 0 && newX < gridSize && newY < gridSize) {
-    // check if new spot if empty
-    if (grid[newY][newX] === 0) {
-      grid[playerY][playerX] = 0;
-      playerX = newX;
-      playerY = newY;
-      grid[newY][newX] = spriteFront;
-    }
-  }
-}
+// function tryMovingTo(newX, newY) {
+//   // make sure you're on the grid
+//   if (newX >= 0 && newY >= 0 && newX < gridSize && newY < gridSize) {
+//     // check if new spot if empty
+//     if (grid[newY][newX] === 0) {
+//       grid[playerY][playerX] = 0;
+//       playerX = newX;
+//       playerY = newY;
+//       grid[newY][newX] = spritePosition;
+//     }
+//   }
+// }
