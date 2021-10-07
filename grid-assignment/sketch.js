@@ -2,7 +2,7 @@
 
 let ground, spriteWidth, spriteHeight, spriteFront, spriteBack, spriteLeft, spriteRight;
 
-let spritePosition = spriteFront;
+let spritePosition = "back";
 
 let state = "start";
 
@@ -54,11 +54,12 @@ function gameState() {
   }
 }
 
+
 ////////////////// display functions /////////////////////////////////
 
-// function displayCharacter() {
-//   image(spritePosition, playerY, playerX, spriteWidth, spriteHeight);
-// }
+function displayCharacter() {
+  image(spriteFront, playerY, playerX, spriteWidth, spriteHeight);
+}
 
 function displayGrid() {
   for (let y=0; y<grid.length; y++) {
@@ -85,29 +86,42 @@ function characterMovement() {
   if (keyIsDown(87)){ //w
     playerY -= speed;
     image(spriteBack, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = spriteBack;
+    spritePosition = "forward";
   }
   else if (keyIsDown(83)){ //s
     playerY += speed;
     image(spriteFront, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = spriteFront;
+    spritePosition = "back";
   }
   else if (keyIsDown(65)){ //a
     playerX -= speed;
     image(spriteLeft, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = spriteFront;
+    spritePosition = "left";
   }
   else if (keyIsDown(68)){ //d
     playerX += speed;
     image(spriteRight, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = spriteFront;
+    spritePosition = "right";
   }
   else {
-    image(spritePosition, playerX, playerY, spriteWidth, spriteHeight);
+    keyReleased();
   }
 }
 
-
+function keyReleased() {
+  if (spritePosition === "forward") {
+    image(spriteBack, playerX, playerY, spriteWidth, spriteHeight);
+  }
+  else if (spritePosition === "back") {
+    image(spriteFront, playerX, playerY, spriteWidth, spriteHeight);
+  }
+  else if (spritePosition === "left") {
+    image(spriteLeft, playerX, playerY, spriteWidth, spriteHeight);
+  }
+  else if (spritePosition === "right") {
+    image(spriteRight, playerX, playerY, spriteWidth, spriteHeight);
+  }
+}
 
 // function tryMovingTo(newX, newY) {
 //   // make sure you're on the grid
