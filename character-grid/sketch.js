@@ -12,11 +12,7 @@ function preload() {
 }
 
 function setup() {
-  if (windowHeight < windowWidth) {
-    createCanvas(windowHeight, windowHeight);
-  }
-  else {
-    createCanvas(windowWidth, windowWidth);
+  createCanvas(800, 800);
   }
 
   // grid = createrandomArray(gridDimensions);

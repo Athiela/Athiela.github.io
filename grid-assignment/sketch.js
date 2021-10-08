@@ -1,47 +1,53 @@
 // Escape Room
 
-let ground, spriteWidth, spriteHeight, spriteFront, spriteBack, spriteLeft, spriteRight;
+let spriteWidth, spriteHeight, spriteFront, spriteBack, spriteLeft, spriteRight;
+
+let ground, wall, room;
 
 let spritePosition = "back";
 
 let state = "start";
 
-let cellSize;
-let gridSize = 4;
+let cellWide, cellHigh, cellWidth, cellHeight;
 let grid;
 let playerX = 10;
 let playerY = 10;
 let speed = 5;
-let newPlayerX = 10;
-let newPlayerY = 10;
 
 function preload() {
   ground = loadImage("assets/floor.png");
+  wall = loadImage("assets/wall.png");
+
   spriteFront = loadImage("assets/spriteFront.png");
   spriteBack = loadImage("assets/spriteBack.png");
   spriteLeft = loadImage("assets/spriteLeft.png");
   spriteRight = loadImage("assets/spriteRight.png");
+
+  room = loadStrings("assets/escape-room.txt");
 }
 
 function setup() {
-  if (windowWidth > windowHeight) {
-    createCanvas(windowHeight, windowHeight);
-  }
-  else {
-    createCanvas(windowWidth, windowWidth);
-  }
+  createCanvas(800, 800);
 
-  grid = createEmptyGrid(gridSize);
-  cellSize = width/gridSize;
+  cellWide = room.length;
+  cellHigh = room[0].length;
+  cellWidth = width/cellWide;
+  cellHeight = height/cellHeight;
+  grid = createEmptyGrid(cellWide, cellHigh);
 
+  for (let y = 0; y<cellHigh; y++) {
+    for (let x = 0; x<cellWide; x++) {
+      let cellType = room[y][x];
+      grid[y][x] = cellType;
+    }
+  }
   spriteWidth = width/8;
   spriteHeight = height/8;
 }
 
 function draw() {
   background(220);
-  displayGrid();
-  characterMovement();
+  gameState();
 }
 
 /////////////////// game state //////////////////////////////
@@ -49,7 +55,6 @@ function draw() {
 function gameState() {
   if (state === "start") {
     displayGrid();
-    displayCharacter();
     characterMovement();
   }
 }
@@ -57,27 +62,32 @@ function gameState() {
 
 ////////////////// display functions /////////////////////////////////
 
-function displayCharacter() {
-  image(spriteFront, playerY, playerX, spriteWidth, spriteHeight);
-}
-
 function displayGrid() {
-  for (let y=0; y<grid.length; y++) {
-    for (let x=0; x<grid[y].length; x++) {
-      image(ground, x*cellSize, y*cellSize, cellSize, cellSize);
+  for (let y=0; y<cellHigh; y++) {
+    for (let x=0; x<cellWide; x++) {
+      showCell(grid[y][x], x, y);
     }
   }
 }
 
-function createEmptyGrid(howLarge) {
-  let emptyArray = [];
-  for (let y=0; y<howLarge; y++) {
-    emptyArray.push([]);
-    for (let x=0; x<howLarge; x++) {
-      emptyArray[y].push(0);
+function createEmptyGrid(cols, rows) {
+  let emptyGrid = [];
+  for (let y = 0; y<rows; y++) {
+    emptyGrid.push([]);
+    for (let x = 0; x<cols; x++) {
+      emptyGrid[y].push(0);
     }
   }
-  return emptyArray;
+  return emptyGrid;
+}
+
+function showCell(whichCell, x, y) {
+  if (whichCell === "0") {
+    image(ground, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+  }
+  else if (whichCell === "1") {
+    image(wall, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+  }
 }
 
 //////////////////// character movement ///////////////////////////////
@@ -123,15 +133,5 @@ function keyReleased() {
   }
 }
 
-// function tryMovingTo(newX, newY) {
-//   // make sure you're on the grid
-//   if (newX >= 0 && newY >= 0 && newX < gridSize && newY < gridSize) {
-//     // check if new spot if empty
-//     if (grid[newY][newX] === 0) {
-//       grid[playerY][playerX] = 0;
-//       playerX = newX;
-//       playerY = newY;
-//       grid[newY][newX] = spritePosition;
-//     }
-//   }
-// }
+
+
