@@ -1,34 +1,60 @@
 // Escape Room
 
+///////////////////////// Global variables ////////////////////////////////////////
+
+// start menu variables
+let title, startButton, hoverStartButton;
+
+let xPlayButton, yPlayButton, playButtonHeight, playButtonWidth;
+
+// sprite variables
 let spriteWidth, spriteHeight, spriteFront, spriteBack, spriteLeft, spriteRight;
-
-let ground, wall, room;
-
 let spritePosition = "back";
 
+// tile variables
+let ground, wall, door, poster, room;
+
+// furniture variables
+let chest, bed, cage;
+
+// state variable
 let state = "start";
 
+// grid variables
 let cellWide, cellHigh, cellWidth, cellHeight;
 let grid;
-let playerX = 10;
-let playerY = 10;
+let playerX = 100;
+let playerY = 100;
 let speed = 5;
 
+///////////////////////// Setup and preload ////////////////////////////////////////
+
 function preload() {
+
+  // start preload
+  title = loadImage("assets/startTitle.png");
+  startButton = loadImage("assets/playButton.png");
+  hoverStartButton = loadImage("assets/hoverPlayButton.png");
+
+  // tile preload
   ground = loadImage("assets/floor.png");
   wall = loadImage("assets/wall.png");
 
+  // sprite image preload
   spriteFront = loadImage("assets/spriteFront.png");
   spriteBack = loadImage("assets/spriteBack.png");
   spriteLeft = loadImage("assets/spriteLeft.png");
   spriteRight = loadImage("assets/spriteRight.png");
 
+  // level preload
   room = loadStrings("assets/escape-room.txt");
 }
 
 function setup() {
+  imageMode(CENTER);
   createCanvas(800, 800);
 
+  // cell setup
   cellWide = room.length;
   cellHigh = room[0].length;
   cellWidth = width/cellWide;
@@ -41,8 +67,16 @@ function setup() {
       grid[y][x] = cellType;
     }
   }
-  spriteWidth = width/8;
-  spriteHeight = height/8;
+
+  // sprite setup
+  spriteWidth = 100;
+  spriteHeight = 100;
+
+  // button setup
+  xPlayButton = width/2;
+  yPlayButton = height/2;
+  playButtonWidth = 350;
+  playButtonHeight = 150;
 }
 
 function draw() {
@@ -54,6 +88,14 @@ function draw() {
 
 function gameState() {
   if (state === "start") {
+    background(100);
+    hoverStartButtons();
+    pressPlay();
+
+    image(title, width/2, 200, 350, 200);
+
+  }
+  if (state === "play") {
     displayGrid();
     characterMovement();
   }
@@ -65,7 +107,8 @@ function gameState() {
 function displayGrid() {
   for (let y=0; y<cellHigh; y++) {
     for (let x=0; x<cellWide; x++) {
-      showCell(grid[y][x], x, y);
+      image(wall, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+      // showCell(grid[y][x], x, y);
     }
   }
 }
@@ -82,11 +125,11 @@ function createEmptyGrid(cols, rows) {
 }
 
 function showCell(whichCell, x, y) {
-  if (whichCell === "0") {
-    image(ground, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-  }
-  else if (whichCell === "1") {
+  if (whichCell === "1") {
     image(wall, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+  }
+  else {
+    image(ground, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
   }
 }
 
@@ -133,5 +176,19 @@ function keyReleased() {
   }
 }
 
+///////////////////////// Button hover and press /////////////////////////////////////////
 
+function hoverStartButtons() {
+  if (mouseX > xPlayButton - playButtonWidth/2 && mouseX < xPlayButton + playButtonWidth/2 && mouseY > yPlayButton - playButtonHeight/2 && mouseY < yPlayButton + playButtonHeight/2) {
+    image(hoverStartButton, xPlayButton, yPlayButton, playButtonWidth, playButtonHeight);
+  }
+  else {
+    image(startButton, xPlayButton, yPlayButton, playButtonWidth, playButtonHeight);
+  }
+}
 
+function pressPlay() {
+  if (mouseX > xPlayButton - playButtonWidth/2 && mouseX < xPlayButton + playButtonWidth/2 && mouseY > yPlayButton - playButtonHeight/2 && mouseY < yPlayButton + playButtonHeight/2 && mouseIsPressed) {
+    state = "play";
+  }
+}
