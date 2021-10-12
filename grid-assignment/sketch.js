@@ -114,6 +114,8 @@ function displayGrid() {
 }
 
 function createEmptyGrid(cols, rows) {
+  let rows = grid.length;
+  let cols = grid[0].length;
   let emptyGrid = [];
   for (let y = 0; y<rows; y++) {
     emptyGrid.push([]);
