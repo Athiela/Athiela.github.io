@@ -7,24 +7,27 @@ let title, startButton, hoverStartButton;
 
 let xPlayButton, yPlayButton, playButtonHeight, playButtonWidth;
 
+// end menu variables, not yet in 
+let youWin, pressEnter;
+
 // sprite variables
 let spriteWidth, spriteHeight, spriteFront, spriteBack, spriteLeft, spriteRight;
 let spritePosition = "back";
 
 // tile variables
-let ground, wall, door, poster, room;
+let ground, wall, door, poster, room, boxes;
 
-// furniture variables
-let chest, bed, cage;
+// furniture variables, not yet in 
+let chest, bed, cage, rug;
 
 // state variable
 let state = "start";
 
 // grid variables
-let cellWide, cellHigh, cellWidth, cellHeight;
-let grid;
-let playerX = 100;
-let playerY = 100;
+let cellSize, grid;
+let gridDimensions = 6;
+let playerX = 150;
+let playerY = 150;
 let speed = 5;
 
 ///////////////////////// Setup and preload ////////////////////////////////////////
@@ -51,22 +54,11 @@ function preload() {
 }
 
 function setup() {
-  imageMode(CENTER);
   createCanvas(800, 800);
 
   // cell setup
-  cellWide = room.length;
-  cellHigh = room[0].length;
-  cellWidth = width/cellWide;
-  cellHeight = height/cellHeight;
-  grid = createEmptyGrid(cellWide, cellHigh);
-
-  for (let y = 0; y<cellHigh; y++) {
-    for (let x = 0; x<cellWide; x++) {
-      let cellType = room[y][x];
-      grid[y][x] = cellType;
-    }
-  }
+  grid = room;
+  cellSize = width/gridDimensions;
 
   // sprite setup
   spriteWidth = 100;
@@ -105,17 +97,43 @@ function gameState() {
 ////////////////// display functions /////////////////////////////////
 
 function displayGrid() {
-  for (let y=0; y<cellHigh; y++) {
-    for (let x=0; x<cellWide; x++) {
-      image(wall, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-      // showCell(grid[y][x], x, y);
+  for (let y=0; y<gridDimensions; y++) {
+    for (let x=0; x<gridDimensions; x++) {
+      if (grid[y][x] === "1") {
+        image(wall, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      if (grid[y][x] === "0") {
+        image(ground, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      // door, not yet in
+      if (grid[y][x] === "2") {
+        image(door, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      // bed, not yet in
+      if (grid[y][x] === "3") {
+        image(door, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      // cage, not yet in
+      if (grid[y][x] === "4") {
+        image(cage, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      // chest, not yet in
+      if (grid[y][x] === "5") {
+        image(chest, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      // rug, not yet in
+      if (grid[y][x] === "6") {
+        image(rug, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      // boxes, not yet in
+      if (grid[y][x] === "7") {
+        image(boxes, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
     }
   }
 }
 
 function createEmptyGrid(cols, rows) {
-  let rows = grid.length;
-  let cols = grid[0].length;
   let emptyGrid = [];
   for (let y = 0; y<rows; y++) {
     emptyGrid.push([]);
@@ -124,15 +142,6 @@ function createEmptyGrid(cols, rows) {
     }
   }
   return emptyGrid;
-}
-
-function showCell(whichCell, x, y) {
-  if (whichCell === "1") {
-    image(wall, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-  }
-  else {
-    image(ground, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-  }
 }
 
 //////////////////// character movement ///////////////////////////////
