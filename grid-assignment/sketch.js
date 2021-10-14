@@ -17,18 +17,22 @@ let spritePosition = "back";
 // tile variables
 let ground, wall, door, poster, room, boxes;
 
-// furniture variables, not yet in 
-let chest, bed, cage, rug;
+// furniture variables
+let chest, bed, cage;
 
-// state variable
-let state = "start";
+// interaction variables
+let interact;
+
+// state variables
+let state = "play";
 let playerState = "move";
+let textState = "none";
 
 // grid variables
 let cellSize, grid;
 let gridDimensions = 6;
-let playerX = 150;
-let playerY = 150;
+let playerX = 250;
+let playerY = 250;
 let speed = 5;
 
 ///////////////////////// Setup and preload ////////////////////////////////////////
@@ -43,6 +47,15 @@ function preload() {
   // tile preload
   ground = loadImage("assets/floor.png");
   wall = loadImage("assets/wall.png");
+  door = loadImage("assets/door.png");
+  poster = loadImage("assets/poster.png");
+  boxes = loadImage("assets/box.png");
+  chest = loadImage("assets/chest.png");
+  bed = loadImage("assets/bed.png");
+  cage = loadImage("assets/cage.png");
+
+  // text box prload
+  interact = loadImage("assets/interact.png");
 
   // sprite image preload
   spriteFront = loadImage("assets/spriteFront.png");
@@ -51,7 +64,7 @@ function preload() {
   spriteRight = loadImage("assets/spriteRight.png");
 
   // level preload
-  room = loadStrings("assets/escape-room.txt");
+  room = loadStrings("assets/1-escape-room.txt");
 }
 
 function setup() {
@@ -92,6 +105,7 @@ function gameState() {
     displayGrid();
     characterMovement();
     overBorder();
+    interactRightBox();
   }
 }
 
@@ -100,36 +114,39 @@ function gameState() {
 function displayGrid() {
   for (let y=0; y<gridDimensions; y++) {
     for (let x=0; x<gridDimensions; x++) {
-      if (grid[y][x] === "1") {
-        image(wall, x*cellSize, y*cellSize, cellSize, cellSize);
-      }
+      // floor
       if (grid[y][x] === "0") {
         image(ground, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      // door, not yet in
+      // wall
+      if (grid[y][x] === "1") {
+        image(wall, x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      // door
       if (grid[y][x] === "2") {
         image(door, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      // bed, not yet in
+      // bed **note: change to plant**
       if (grid[y][x] === "3") {
-        image(door, x*cellSize, y*cellSize, cellSize, cellSize);
+        image(bed, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      // cage, not yet in
+      // cage
       if (grid[y][x] === "4") {
         image(cage, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      // chest, not yet in
+      // chest
       if (grid[y][x] === "5") {
         image(chest, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      // rug, not yet in
-      if (grid[y][x] === "6") {
-        image(rug, x*cellSize, y*cellSize, cellSize, cellSize);
+      // poster
+      if (grid[y][x] === "#") {
+        image(poster, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      // boxes, not yet in
-      if (grid[y][x] === "7") {
+      // boxes
+      if (grid[y][x] === "*") {
         image(boxes, x*cellSize, y*cellSize, cellSize, cellSize);
       }
+      //////////////////////
     }
   }
 }
@@ -192,17 +209,56 @@ function keyReleased() {
 }
 
 function overBorder() {
-  if (playerX < 0+cellSize) {
+  // check if over left side
+  if (playerX < 0+cellSize*2) {
     playerX = playerX + 5;
   }
-  if (playerX > width-cellSize) {
+  // check if over right side
+  if (playerX > width-cellSize*2) {
     playerX = playerX - 5;
   }
-  if (playerY < 5+cellSize) {
+  // check if over top
+  if (playerY < 10+cellSize) {
     playerY = playerY + 10;
   }
-  if (playerY > height-cellSize) {
+  // check if over bottom
+  if (playerY > height-cellSize*2) {
     playerY = playerY - 5;
+  }
+}
+
+////////////////////////// Character interaction /////////////////////////////////////////
+
+function interactChest() {
+}
+
+function interactRightBox() {
+  if (playerX < 0+cellSize*2.5 && playerY < cellSize*1.5 && playerY < cellSize*2.5) {
+    image(interact, playerX, playerY+30, 20, 10);
+  }
+}
+
+function interactWrongBox() {
+
+}
+
+function interactPoster() {
+
+}
+
+function interactCage() {
+
+}
+
+function interactDoor() {
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+function displayText() {
+  if (textState === "right-chest") {
+    image(title, width/2, height /2, 200, 100);
   }
 }
 
@@ -225,65 +281,3 @@ function pressPlay() {
 
 
 //////////////////////////////////////////////////////////////////////////////
-
-// function keyPressed() {
-//   if (state === "rest") {
-//     if (key === "w") {
-//       playerState = "up";
-//     }
-//     else if (key === "a") {
-//       playerState = "left";
-//     }
-//     else if (key === "s") {
-//       playerState = "down";
-//     }
-//     else if (key === "d") {
-//       playerState = "right";
-//     }
-//   }
-// }
-
-// function moveByState() {
-//   if (frameCount % 30 === 0) {
-//     let didMove;
-//     if (state === "right") {
-//       didMove = tryMovingTo(playerX+1, playerY);
-//     }
-//     else if (state === "left") {
-//       didMove = tryMovingTo(playerX-1, playerY);
-//     }
-//     else if (state === "up") {
-//       didMove = tryMovingTo(playerX, playerY-1);
-//     }
-//     else if (state === "down") {
-//       didMove = tryMovingTo(playerX, playerY+1);
-//     }
-
-//     if (!didMove) {
-//       state = "rest";
-//     }
-//   }
-// }
-
-// function tryMovingTo(newX, newY) {
-//   //make sure you're on the grid
-//   if (newX >= 0 && newY >= 0 && newX < gridDimensions && newY < gridDimensions) {
-//     //check if  new spot is empty
-//     if (grid[newY][newX] === 0) {
-//       //reset current spot to be empty
-//       grid[playerY][playerX] = 0;
-
-//       //move player
-//       playerX = newX;
-//       playerY = newY;
-
-//       //put player back in grid
-//       grid[newY][newX] = 9;
-
-//       return true; //so I know we moved
-//     }
-//   }
-
-//   return false; //no move happened
-// }
-
