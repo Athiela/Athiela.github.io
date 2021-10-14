@@ -22,6 +22,7 @@ let chest, bed, cage, rug;
 
 // state variable
 let state = "start";
+let playerState = "move";
 
 // grid variables
 let cellSize, grid;
@@ -90,9 +91,9 @@ function gameState() {
   if (state === "play") {
     displayGrid();
     characterMovement();
+    overBorder();
   }
 }
-
 
 ////////////////// display functions /////////////////////////////////
 
@@ -147,30 +148,33 @@ function createEmptyGrid(cols, rows) {
 //////////////////// character movement ///////////////////////////////
 
 function characterMovement() {
-  if (keyIsDown(87)){ //w
-    playerY -= speed;
-    image(spriteBack, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = "forward";
-  }
-  else if (keyIsDown(83)){ //s
-    playerY += speed;
-    image(spriteFront, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = "back";
-  }
-  else if (keyIsDown(65)){ //a
-    playerX -= speed;
-    image(spriteLeft, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = "left";
-  }
-  else if (keyIsDown(68)){ //d
-    playerX += speed;
-    image(spriteRight, playerX, playerY, spriteWidth, spriteHeight);
-    spritePosition = "right";
-  }
-  else {
-    keyReleased();
+  if (playerState === "move") {
+    if (keyIsDown(87)){ //w
+      playerY -= speed;
+      image(spriteBack, playerX, playerY, spriteWidth, spriteHeight);
+      spritePosition = "forward";
+    }
+    else if (keyIsDown(83)){ //s
+      playerY += speed;
+      image(spriteFront, playerX, playerY, spriteWidth, spriteHeight);
+      spritePosition = "back";
+    }
+    else if (keyIsDown(65)){ //a
+      playerX -= speed;
+      image(spriteLeft, playerX, playerY, spriteWidth, spriteHeight);
+      spritePosition = "left";
+    }
+    else if (keyIsDown(68)){ //d
+      playerX += speed;
+      image(spriteRight, playerX, playerY, spriteWidth, spriteHeight);
+      spritePosition = "right";
+    }
+    else {
+      keyReleased();
+    }
   }
 }
+
 
 function keyReleased() {
   if (spritePosition === "forward") {
@@ -184,6 +188,21 @@ function keyReleased() {
   }
   else if (spritePosition === "right") {
     image(spriteRight, playerX, playerY, spriteWidth, spriteHeight);
+  }
+}
+
+function overBorder() {
+  if (playerX < 0+cellSize) {
+    playerX = playerX + 5;
+  }
+  if (playerX > width-cellSize) {
+    playerX = playerX - 5;
+  }
+  if (playerY < 5+cellSize) {
+    playerY = playerY + 10;
+  }
+  if (playerY > height-cellSize) {
+    playerY = playerY - 5;
   }
 }
 
@@ -203,3 +222,68 @@ function pressPlay() {
     state = "play";
   }
 }
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+// function keyPressed() {
+//   if (state === "rest") {
+//     if (key === "w") {
+//       playerState = "up";
+//     }
+//     else if (key === "a") {
+//       playerState = "left";
+//     }
+//     else if (key === "s") {
+//       playerState = "down";
+//     }
+//     else if (key === "d") {
+//       playerState = "right";
+//     }
+//   }
+// }
+
+// function moveByState() {
+//   if (frameCount % 30 === 0) {
+//     let didMove;
+//     if (state === "right") {
+//       didMove = tryMovingTo(playerX+1, playerY);
+//     }
+//     else if (state === "left") {
+//       didMove = tryMovingTo(playerX-1, playerY);
+//     }
+//     else if (state === "up") {
+//       didMove = tryMovingTo(playerX, playerY-1);
+//     }
+//     else if (state === "down") {
+//       didMove = tryMovingTo(playerX, playerY+1);
+//     }
+
+//     if (!didMove) {
+//       state = "rest";
+//     }
+//   }
+// }
+
+// function tryMovingTo(newX, newY) {
+//   //make sure you're on the grid
+//   if (newX >= 0 && newY >= 0 && newX < gridDimensions && newY < gridDimensions) {
+//     //check if  new spot is empty
+//     if (grid[newY][newX] === 0) {
+//       //reset current spot to be empty
+//       grid[playerY][playerX] = 0;
+
+//       //move player
+//       playerX = newX;
+//       playerY = newY;
+
+//       //put player back in grid
+//       grid[newY][newX] = 9;
+
+//       return true; //so I know we moved
+//     }
+//   }
+
+//   return false; //no move happened
+// }
+
