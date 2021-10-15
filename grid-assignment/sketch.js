@@ -22,6 +22,13 @@ let chest, bed, cage;
 
 // interaction variables
 let interact;
+let hasFood = "no";
+let hasKey = false;
+
+// text-box variables
+let textBoxEmpty, textBoxItem, textChest, textDoorHasKey, textDoorNoKey, textFeedHamster, textHamsterFed, textHamsterHideItem, textHamsterNoFood, textPlant;
+let xTextBox, yTextBox, textBoxWidth, textBoxHeight;
+
 
 // state variables
 let state = "play";
@@ -33,7 +40,7 @@ let cellSize, grid;
 let gridDimensions = 6;
 let playerX = 250;
 let playerY = 250;
-let speed = 8;
+let speed = 5;
 
 ///////////////////////// Setup and preload ////////////////////////////////////////
 
@@ -54,8 +61,18 @@ function preload() {
   bed = loadImage("assets/bed.png");
   cage = loadImage("assets/cage.png");
 
-  // text box prload
+  // text box preload
   interact = loadImage("assets/interact.png");
+  textBoxEmpty = loadImage("assets/text-boxempty.png");
+  textBoxItem = loadImage("assets/text-boxitem.png");
+  textChest = loadImage("assets/text-chest.png");
+  textDoorHasKey = loadImage("assets/text-doorhaskey.png");
+  textDoorNoKey = loadImage("assets/text-doornokey.png");
+  textFeedHamster = loadImage("assets/text-feedhamster.png");
+  textHamsterFed = loadImage("assets/text-hamsterfed.png");
+  textHamsterNoFood = loadImage("assets/text-hamsternofood.png");
+  textPlant = loadImage("assets/text-plant.png");
+
 
   // sprite image preload
   spriteFront = loadImage("assets/spriteFront.png");
@@ -83,6 +100,11 @@ function setup() {
   yPlayButton = height/2;
   playButtonWidth = 350;
   playButtonHeight = 150;
+
+  xTextBox = width/7;
+  yTextBox = height/4;
+  textBoxWidth = width/1.4;
+  textBoxHeight = height/2.2;
 }
 
 function draw() {
@@ -110,32 +132,36 @@ function gameState() {
   if (state === "box-item") {
     displayGrid();
     exitText();
-    image(title, width/2, height /2, width/3, height/2);
+    boxItem();
+  }
+  if (state === "food-get") {
+    displayGrid();
+
   }
   if (state === "cage") {
     displayGrid();
     exitText();
-    image(title, width/2, height /2, width/3, height/2);
+    image(textHamsterNoFood, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
   if (state === "box-none") {
     displayGrid();
     exitText();
-    image(title, width/2, height /2, width/3, height/2);
+    image(textBoxEmpty, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
   if (state === "plant") {
     displayGrid();
     exitText();
-    image(title, width/2, height /2, width/3, height/2);
+    image(textPlant, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
   if (state === "chest") {
     displayGrid();
     exitText();
-    image(title, width/2, height /2, width/3, height/2);
+    image(textChest, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
   if (state === "door") {
     displayGrid();
     exitText();
-    image(title, width/2, height /2, width/3, height/2);
+    image(textDoorNoKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
 }
 
@@ -176,7 +202,6 @@ function displayGrid() {
       if (grid[y][x] === "*") {
         image(boxes, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      //////////////////////
     }
   }
 }
@@ -354,6 +379,16 @@ function exitText() {
   }
 }
 
+function boxItem() {
+  if (hasFood === "no") {
+    image(textBoxItem, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    state = "food-get";
+    hasFood = "yes";
+  }
+  if (hasFood === "yes") {
+    image(textBoxEmpty, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+  }
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
