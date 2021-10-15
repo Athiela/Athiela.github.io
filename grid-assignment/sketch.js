@@ -33,7 +33,7 @@ let cellSize, grid;
 let gridDimensions = 6;
 let playerX = 250;
 let playerY = 250;
-let speed = 5;
+let speed = 8;
 
 ///////////////////////// Setup and preload ////////////////////////////////////////
 
@@ -105,7 +105,37 @@ function gameState() {
     displayGrid();
     characterMovement();
     overBorder();
-    interactRightBox();
+    interactFurniture();
+  }
+  if (state === "box-item") {
+    displayGrid();
+    exitText();
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "cage") {
+    displayGrid();
+    exitText();
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "box-none") {
+    displayGrid();
+    exitText();
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "plant") {
+    displayGrid();
+    exitText();
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "chest") {
+    displayGrid();
+    exitText();
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "door") {
+    displayGrid();
+    exitText();
+    image(title, width/2, height /2, width/3, height/2);
   }
 }
 
@@ -165,6 +195,7 @@ function createEmptyGrid(cols, rows) {
 //////////////////// character movement ///////////////////////////////
 
 function characterMovement() {
+  // move character
   if (playerState === "move") {
     if (keyIsDown(87)){ //w
       playerY -= speed;
@@ -194,6 +225,7 @@ function characterMovement() {
 
 
 function keyReleased() {
+  // keep facing whichever position 
   if (spritePosition === "forward") {
     image(spriteBack, playerX, playerY, spriteWidth, spriteHeight);
   }
@@ -210,55 +242,136 @@ function keyReleased() {
 
 function overBorder() {
   // check if over left side
-  if (playerX < 0+cellSize*2) {
-    playerX = playerX + 5;
+  if (playerX < 0+cellSize*1.9) {
+    playerX = playerX + 8;
   }
   // check if over right side
-  if (playerX > width-cellSize*2) {
-    playerX = playerX - 5;
+  if (playerX > width-cellSize*1.65) {
+    playerX = playerX - speed;
   }
   // check if over top
-  if (playerY < 10+cellSize) {
-    playerY = playerY + 10;
+  if (playerY < cellSize+12) {
+    playerY = playerY + (speed+3);
   }
   // check if over bottom
-  if (playerY > height-cellSize*2) {
-    playerY = playerY - 5;
+  if (playerY > height-cellSize*1.7) {
+    playerY = playerY - speed;
   }
 }
 
 ////////////////////////// Character interaction /////////////////////////////////////////
 
-function interactChest() {
-}
-
-function interactRightBox() {
-  if (playerX < 0+cellSize*2.5 && playerY < cellSize*1.5 && playerY < cellSize*2.5) {
-    image(interact, playerX, playerY+30, 20, 10);
+function interactFurniture() {
+  // interact with box with item
+  if (playerX < cellSize*2 && playerY < cellSize*1.7 && spritePosition ==="left") {
+    if (keyIsDown(13)) {
+      state = "box-item";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with cage
+  else if (playerX < cellSize*2 && playerY < cellSize*2.7 && spritePosition ==="left") {
+    if (keyIsDown(13)){
+      state = "cage";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with box without item
+  else if (playerX < cellSize*2 && playerY < cellSize*3.7 && spritePosition ==="left") {
+    if (keyIsDown(13)){
+      state = "box-none";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with plant
+  else if (playerX < cellSize*2 && playerY < cellSize*4.7 && spritePosition ==="left") {
+    if (keyIsDown(13)){
+      state = "plant";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with plant
+  else if (playerX < cellSize*2.5 && playerY > height-cellSize*1.9 && spritePosition ==="back") {
+    if (keyIsDown(13)){
+      state = "plant";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with box without item
+  else if (playerX < cellSize*3.5 && playerY > height-cellSize*1.9 && spritePosition ==="back") {
+    if (keyIsDown(13)){
+      state = "box-none";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with plant
+  else if (playerX < cellSize*4.5 && playerY > height-cellSize*1.9 && spritePosition ==="back") {
+    if (keyIsDown(13)){
+      state = "plant";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with box without item
+  else if (playerX > width-cellSize*2 && playerY > height-cellSize*2.5 && spritePosition ==="right") {
+    if (keyIsDown(13)){
+      state = "box-none";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with box without item
+  else if (playerX > width-cellSize*2 && playerY > height-cellSize*3.5 && spritePosition ==="right") {
+    if (keyIsDown(13)){
+      state = "box-none";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with chest
+  else if (playerX > width-cellSize*2 && playerY > height-cellSize*4.5 && spritePosition ==="right") {
+    if (keyIsDown(13)){
+      state = "chest";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with box without item
+  else if (playerX > width-cellSize*2 && playerY > height-cellSize*5.5 && spritePosition ==="right") {
+    if (keyIsDown(13)){
+      state = "box-none";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
+  }
+  // interact with door
+  else if (playerX > cellSize*2.5 && playerX < cellSize*3.5 && playerY < cellSize+30 && spritePosition ==="forward") {
+    if (keyIsDown(13)){
+      state = "door";
+    }
+    image(interact, playerX, playerY-30, width/8, height/15);
   }
 }
 
-function interactWrongBox() {
-
+function exitText() {
+  if (keyIsDown(27)){
+    state = "play";
+  }
 }
 
-function interactPoster() {
-
-}
-
-function interactCage() {
-
-}
-
-function interactDoor() {
-
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 function displayText() {
-  if (textState === "right-chest") {
-    image(title, width/2, height /2, 200, 100);
+  if (state === "box-item") {
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "cage") {
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "box-none") {
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "plant") {
+    image(title, width/2, height /2, width/3, height/2);
+  }
+  if (state === "right-chest") {
+    image(title, width/2, height /2, width/3, height/2);
   }
 }
 
