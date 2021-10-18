@@ -1,4 +1,5 @@
 // Escape Room
+// Athiela A.
 
 ///////////////////////// Global variables ////////////////////////////////////////
 
@@ -35,7 +36,7 @@ let xTextBox, yTextBox, textBoxWidth, textBoxHeight;
 
 
 // state variables
-let state = "you-win";
+let state = "start";
 let playerState = "move";
 let textState = "none";
 
@@ -130,76 +131,89 @@ function draw() {
 /////////////////// game state //////////////////////////////
 
 function gameState() {
+  // state - start screen
   if (state === "start") {
     background(100);
-    hoverStartButtons();
-    pressPlay();
 
     image(title, width/3.5, 200, 350, 200);
-
+    hoverStartButtons();
+    pressPlay();
   }
+  // state - walking around room
   if (state === "play") {
     displayGrid();
     characterMovement();
     overBorder();
     interactFurniture();
   }
+  // state - check if you got item already or not
   if (state === "box-item") {
     displayGrid();
     exitText();
     boxItem();
   }
+  // state - ask if you want to pick up food
   if (state === "food-get") {
     displayGrid();
     image(textBoxItem, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
     foodGet();
   }
+  // state - food acquired
   if (state === "food-pickup") {
     displayGrid();
     image(textGetItemFood, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
     exitText();
   }
+  // state - check if you fed the hamster yet or not
   if (state === "cage") {
     displayGrid();
     cageInteraction();
   }
-  if (state === "key-pickup") {
-    displayGrid();
-    image(textGetItemKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
-    exitText();
-  }
+  // state - ask to feed hamster
   if (state === "feed-hamster") {
     displayGrid();
     image(textFeedHamster, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
     feedHamster();
   }
+  // state - key acquired
+  if (state === "key-pickup") {
+    displayGrid();
+    image(textGetItemKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    exitText();
+  }
+  // state - ask to use key
   if (state === "key-has") {
     displayGrid();
     image(textDoorHasKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
     useKey();
   }
+  // state - empty box dialogue
   if (state === "box-none") {
     displayGrid();
     exitText();
     image(textBoxEmpty, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
+  // state - plant dialogue
   if (state === "plant") {
     displayGrid();
     exitText();
     image(textPlant, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
+  // state - chest dialogue
   if (state === "chest") {
     displayGrid();
     exitText();
     image(textChest, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
   }
+  // state - check to see if you have key to door
   if (state === "door") {
     displayGrid();
     exitText();
     doorInteraction();
   }
+  // state - you escaped!
   if (state === "you-win") {
-    background(119, 65, 65 );
+    background(119, 65, 65);
     image(youWin, width/4, height/4, 400, 200);
     image(pressEnter, width/4, height/1.8, 400, 200);
     backToStart();
@@ -414,12 +428,14 @@ function interactFurniture() {
   }
 }
 
+// exit text with escape key
 function exitText() {
   if (keyIsDown(27)){
     state = "play";
   }
 }
 
+// ask to pick up food function
 function foodGet() {
   if (keyIsDown(49)){
     state = "food-pickup";
@@ -430,6 +446,7 @@ function foodGet() {
   }
 }
 
+// ask to feed hamster function
 function feedHamster() {
   if (keyIsDown(49)){
     state = "key-pickup";
@@ -441,6 +458,7 @@ function feedHamster() {
   }
 }
 
+// check to see if you got item from box yet function
 function boxItem() {
   if (hasFood === "no") {
     state = "food-get";
@@ -450,6 +468,7 @@ function boxItem() {
   }
 }
 
+// ask to use key function
 function useKey() {
   if (keyIsDown(49)){
     state = "you-win";
@@ -459,6 +478,7 @@ function useKey() {
   }
 }
 
+// check to see if you fed the hamster yet function
 function cageInteraction() {
   if (hasFood === "no" && isFed === "not-fed") {
     image(textHamsterNoFood, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
@@ -473,6 +493,7 @@ function cageInteraction() {
   }
 }
 
+// check to see if you have a key function
 function doorInteraction() {
   if (hasKey === "yes") {
     state = "key-has";
@@ -483,32 +504,14 @@ function doorInteraction() {
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-
-function displayText() {
-  if (state === "box-item") {
-    image(title, width/2, height /2, width/3, height/2);
-  }
-  if (state === "cage") {
-    image(title, width/2, height /2, width/3, height/2);
-  }
-  if (state === "box-none") {
-    image(title, width/2, height /2, width/3, height/2);
-  }
-  if (state === "plant") {
-    image(title, width/2, height /2, width/3, height/2);
-  }
-  if (state === "right-chest") {
-    image(title, width/2, height /2, width/3, height/2);
-  }
-}
-
 ///////////////////////// Button hover and press /////////////////////////////////////////
 
 function hoverStartButtons() {
+  // hovering
   if (mouseX > xPlayButton && mouseX < xPlayButton + playButtonWidth && mouseY > yPlayButton && mouseY < yPlayButton + playButtonHeight) {
     image(hoverStartButton, xPlayButton, yPlayButton, playButtonWidth, playButtonHeight);
   }
+  // not hovering
   else {
     image(startButton, xPlayButton, yPlayButton, playButtonWidth, playButtonHeight);
   }
@@ -522,7 +525,10 @@ function pressPlay() {
 
 function backToStart() {
   if (keyIsDown(13)) {
+    // state back to start
     state = "start";
+
+    // restore
     hasFood = "no";
     isFed = "not-fed";
     hasKey = "no";
