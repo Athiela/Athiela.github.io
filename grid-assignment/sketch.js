@@ -2,6 +2,9 @@
 
 ///////////////////////// Global variables ////////////////////////////////////////
 
+// music variable
+let music;
+
 // start menu variables
 let title, startButton, hoverStartButton;
 
@@ -23,15 +26,16 @@ let chest, bed, cage;
 // interaction variables
 let interact;
 let hasFood = "no";
-let hasKey = false;
+let isFed = "not-fed";
+let hasKey = "no";
 
 // text-box variables
-let textBoxEmpty, textBoxItem, textChest, textDoorHasKey, textDoorNoKey, textFeedHamster, textHamsterFed, textHamsterHideItem, textHamsterNoFood, textPlant;
+let textBoxEmpty, textBoxItem, textChest, textDoorHasKey, textDoorNoKey, textFeedHamster, textHamsterFed, textHamsterHideItem, textHamsterNoFood, textPlant, textGetItemFood, textGetItemKey;
 let xTextBox, yTextBox, textBoxWidth, textBoxHeight;
 
 
 // state variables
-let state = "play";
+let state = "you-win";
 let playerState = "move";
 let textState = "none";
 
@@ -50,6 +54,10 @@ function preload() {
   title = loadImage("assets/startTitle.png");
   startButton = loadImage("assets/playButton.png");
   hoverStartButton = loadImage("assets/hoverPlayButton.png");
+
+  // end preload
+  youWin = loadImage("assets/youEscaped.png");
+  pressEnter = loadImage("assets/pressEnter.png");
 
   // tile preload
   ground = loadImage("assets/floor.png");
@@ -72,7 +80,8 @@ function preload() {
   textHamsterFed = loadImage("assets/text-hamsterfed.png");
   textHamsterNoFood = loadImage("assets/text-hamsternofood.png");
   textPlant = loadImage("assets/text-plant.png");
-
+  textGetItemFood = loadImage("assets/text-itemfood.png");
+  textGetItemKey = loadImage("assets/text-itemkey.png");
 
   // sprite image preload
   spriteFront = loadImage("assets/spriteFront.png");
@@ -82,6 +91,9 @@ function preload() {
 
   // level preload
   room = loadStrings("assets/1-escape-room.txt");
+
+  // music preload
+  music = loadSound("assets/music.mp3");
 }
 
 function setup() {
@@ -96,7 +108,7 @@ function setup() {
   spriteHeight = 100;
 
   // button setup
-  xPlayButton = width/2;
+  xPlayButton = width/3.5;
   yPlayButton = height/2;
   playButtonWidth = 350;
   playButtonHeight = 150;
@@ -105,6 +117,9 @@ function setup() {
   yTextBox = height/4;
   textBoxWidth = width/1.4;
   textBoxHeight = height/2.2;
+
+  // music loop
+  music.loop();
 }
 
 function draw() {
@@ -120,7 +135,7 @@ function gameState() {
     hoverStartButtons();
     pressPlay();
 
-    image(title, width/2, 200, 350, 200);
+    image(title, width/3.5, 200, 350, 200);
 
   }
   if (state === "play") {
@@ -136,12 +151,32 @@ function gameState() {
   }
   if (state === "food-get") {
     displayGrid();
-
+    image(textBoxItem, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    foodGet();
+  }
+  if (state === "food-pickup") {
+    displayGrid();
+    image(textGetItemFood, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    exitText();
   }
   if (state === "cage") {
     displayGrid();
+    cageInteraction();
+  }
+  if (state === "key-pickup") {
+    displayGrid();
+    image(textGetItemKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
     exitText();
-    image(textHamsterNoFood, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+  }
+  if (state === "feed-hamster") {
+    displayGrid();
+    image(textFeedHamster, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    feedHamster();
+  }
+  if (state === "key-has") {
+    displayGrid();
+    image(textDoorHasKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    useKey();
   }
   if (state === "box-none") {
     displayGrid();
@@ -161,7 +196,13 @@ function gameState() {
   if (state === "door") {
     displayGrid();
     exitText();
-    image(textDoorNoKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    doorInteraction();
+  }
+  if (state === "you-win") {
+    background(119, 65, 65 );
+    image(youWin, width/4, height/4, 400, 200);
+    image(pressEnter, width/4, height/1.8, 400, 200);
+    backToStart();
   }
 }
 
@@ -379,14 +420,66 @@ function exitText() {
   }
 }
 
+function foodGet() {
+  if (keyIsDown(49)){
+    state = "food-pickup";
+    hasFood = "yes";
+  }
+  else if (keyIsDown(50)){
+    state = "play";
+  }
+}
+
+function feedHamster() {
+  if (keyIsDown(49)){
+    state = "key-pickup";
+    hasKey = "yes";
+    isFed = "yes";
+  }
+  else if (keyIsDown(50)){
+    state = "play";
+  }
+}
+
 function boxItem() {
   if (hasFood === "no") {
-    image(textBoxItem, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
     state = "food-get";
-    hasFood = "yes";
   }
   if (hasFood === "yes") {
     image(textBoxEmpty, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+  }
+}
+
+function useKey() {
+  if (keyIsDown(49)){
+    state = "you-win";
+  }
+  else if (keyIsDown(50)){
+    state = "play";
+  }
+}
+
+function cageInteraction() {
+  if (hasFood === "no" && isFed === "not-fed") {
+    image(textHamsterNoFood, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    exitText();
+  }
+  else if (hasFood === "yes" && isFed === "not-fed") {
+    state = "feed-hamster";
+  }
+  else if (isFed === "yes") {
+    image(textHamsterFed, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    exitText();
+  }
+}
+
+function doorInteraction() {
+  if (hasKey === "yes") {
+    state = "key-has";
+  }
+  if (hasKey === "no") {
+    image(textDoorNoKey, xTextBox, yTextBox, textBoxWidth, textBoxHeight);
+    exitText();
   }
 }
 
@@ -413,7 +506,7 @@ function displayText() {
 ///////////////////////// Button hover and press /////////////////////////////////////////
 
 function hoverStartButtons() {
-  if (mouseX > xPlayButton - playButtonWidth/2 && mouseX < xPlayButton + playButtonWidth/2 && mouseY > yPlayButton - playButtonHeight/2 && mouseY < yPlayButton + playButtonHeight/2) {
+  if (mouseX > xPlayButton && mouseX < xPlayButton + playButtonWidth && mouseY > yPlayButton && mouseY < yPlayButton + playButtonHeight) {
     image(hoverStartButton, xPlayButton, yPlayButton, playButtonWidth, playButtonHeight);
   }
   else {
@@ -422,10 +515,18 @@ function hoverStartButtons() {
 }
 
 function pressPlay() {
-  if (mouseX > xPlayButton - playButtonWidth/2 && mouseX < xPlayButton + playButtonWidth/2 && mouseY > yPlayButton - playButtonHeight/2 && mouseY < yPlayButton + playButtonHeight/2 && mouseIsPressed) {
+  if (mouseX > xPlayButton && mouseX < xPlayButton + playButtonWidth && mouseY > yPlayButton && mouseY < yPlayButton + playButtonHeight && mouseIsPressed) {
     state = "play";
   }
 }
 
+function backToStart() {
+  if (keyIsDown(13)) {
+    state = "start";
+    hasFood = "no";
+    isFed = "not-fed";
+    hasKey = "no";
+  }
+}
 
 //////////////////////////////////////////////////////////////////////////////
