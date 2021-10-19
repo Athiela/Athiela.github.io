@@ -5,7 +5,7 @@
 
 //////////// Global Variables ///////////////////////////
 
-let cardR, cardP, cardS, xCardRock, yCardRock, xCardPaper, yCardPaper, xCardScissors, yCardScissors, cardWidthRock, cardHeightRock, cardWidthPaper, cardHeightPaper, cardWidthScissors, cardHeightScissors, title, cardFrame, playButton, howToPlayButton;
+let cardR, cardP, cardS, xCardRock, yCardRock, xCardPaper, yCardPaper, xCardScissors, yCardScissors, cardWidth, cardHeight, title, cardFrame, playButton, howToPlayButton;
 let playButtonWidth, howToPlayButtonWidth, playButtonHeight, howToPlayButtonHeight, xHowToPlayButton, yHowToPlayButton, xPlayButton, yPlayButton;
 let hoverHowToPlay, hoverPlay, startTitle, pressEsc;
 let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight, startRound;
@@ -76,14 +76,8 @@ function setup() {
   
   xCardScissors = width/1.3;
   yCardScissors = height/2;
-  cardWidthRock = width/6;
-  cardHeightRock = height/2.2;
-  
-  cardWidthPaper = width/6;
-  cardHeightPaper = height/2.2;
-  
-  cardWidthScissors = width/6;
-  cardHeightScissors = height/2.2;
+  cardWidth = width/6;
+  cardHeight = height/2.2;
 
   xHowToPlayButton = width/2;
   yHowToPlayButton = height/1.3;
