@@ -8,7 +8,7 @@
 let cardR, cardP, cardS, xCardRock, yCardRock, xCardPaper, yCardPaper, xCardScissors, yCardScissors, cardWidth, cardHeight, title, cardFrame, playButton, howToPlayButton;
 let playButtonWidth, howToPlayButtonWidth, playButtonHeight, howToPlayButtonHeight, xHowToPlayButton, yHowToPlayButton, xPlayButton, yPlayButton;
 let hoverHowToPlay, hoverPlay, startTitle, pressEsc;
-let menuButton, rockCallout, paperCallout, scissorsCallout, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight, startRound;
+let menuButton, youWin, youLose, playAgain, howToPlayMenu, exitMenu, xExitMenu, yExitMenu, exitMenuWidth, exitMenuHeight;
 let exitButton, hoverExit, hoverKeybind, keybind, keybindMenu, pressEnter;
 let xExitButton, yExitButton, exitButtonWidth, exitButtonHeight, xKeybind, yKeybind, keybindWidth, keybindHeight, xMenu, yMenu, menuWidth, menuHeight, areYouSureExit, otherPressEnter, youChoseRock, youChosePaper, youChoseScissors;
 
@@ -228,32 +228,32 @@ function displayTitle() {
 }
 
 function displayCardRock() {
-  image(cardR, xCardRock, yCardRock, cardWidthRock, cardHeightRock);
+  image(cardR, xCardRock, yCardRock, cardWidth, cardHeight);
 }
 
 function displayCardPaper() {
-  image(cardP, xCardPaper, yCardPaper, cardWidthPaper, cardHeightPaper);
+  image(cardP, xCardPaper, yCardPaper, cardWidth, cardHeight);
 }
 
 function displayCardScissors() {
-  image(cardS, xCardScissors, yCardScissors, cardWidthScissors, cardHeightScissors);
+  image(cardS, xCardScissors, yCardScissors, cardWidth, cardHeight);
 }
 
 function displayRockFrame() {
   if (rockHover === true) {
-    image(cardFrame, xCardRock, yCardRock, cardWidthRock + 105, cardHeightRock + 155);
+    image(cardFrame, xCardRock, yCardRock, cardWidth + 105, cardHeight + 155);
   }
 }
 
 function displayPaperFrame() {
   if (paperHover === true) {
-    image(cardFrame, xCardPaper, yCardPaper, cardWidthPaper + 105, cardHeightPaper + 155);
+    image(cardFrame, xCardPaper, yCardPaper, cardWidth + 105, cardHeight + 155);
   }
 }
 
 function displayScissorsFrame() {
   if (scissorsHover === true) {
-    image(cardFrame, xCardScissors, yCardScissors, cardWidthScissors + 105, cardHeightScissors + 155);
+    image(cardFrame, xCardScissors, yCardScissors, cardWidth + 105, cardHeight + 155);
   }
 }
 
@@ -375,19 +375,19 @@ function hoverMenuButtons() {
 ////////////// Chose card/Change functions ////////////////////
 
 function hoverCards() {
-  if (mouseX > xCardRock - cardWidthRock / 2 && mouseX < xCardRock + cardWidthRock / 2 && mouseY > yCardRock - cardHeightRock / 2 && mouseY < yCardRock + cardHeightRock / 2) {
+  if (mouseX > xCardRock - cardWidth / 2 && mouseX < xCardRock + cardWidth / 2 && mouseY > yCardRock - cardHeight / 2 && mouseY < yCardRock + cardHeight / 2) {
     rockHover = true;
   }
   else {
     rockHover = false;
   }
-  if (mouseX > xCardPaper - cardWidthPaper / 2 && mouseX < xCardPaper + cardWidthPaper / 2 && mouseY > yCardPaper - cardHeightPaper / 2 && mouseY < yCardPaper + cardHeightPaper / 2) {
+  if (mouseX > xCardPaper - cardWidth / 2 && mouseX < xCardPaper + cardWidth / 2 && mouseY > yCardPaper - cardHeight / 2 && mouseY < yCardPaper + cardHeight / 2) {
     paperHover = true;
   }
   else {
     paperHover = false;
   }
-  if (mouseX > xCardScissors - cardWidthScissors / 2 && mouseX < xCardScissors + cardWidthScissors / 2 && mouseY > yCardScissors - cardHeightScissors / 2 && mouseY < yCardScissors + cardHeightScissors / 2) {
+  if (mouseX > xCardScissors - cardWidth / 2 && mouseX < xCardScissors + cardWidth / 2 && mouseY > yCardScissors - cardHeight / 2 && mouseY < yCardScissors + cardHeight / 2) {
     scissorsHover = true;
   } 
   else {
@@ -414,11 +414,11 @@ function restoreCardPos() {
 
   xCardScissors = width/1.3;
   yCardScissors = height/2;
-  cardWidthRock = width/6;
-  cardHeightRock = height/2.2;
+  cardWidth = width/6;
+  cardHeight = height/2.2;
 
-  cardWidthPaper = width/6;
-  cardHeightPaper = height/2.2;
+  cardWidth = width/6;
+  cardHeight = height/2.2;
 }
 
 function restoreResult() {
@@ -455,19 +455,19 @@ function pressExitHowToPlayMenu() {
 }
 
 function pressRockCard() {
-  if (mouseX > xCardRock - cardWidthRock / 2 && mouseX < xCardRock + cardWidthRock / 2 && mouseY > yCardRock - cardHeightRock / 2 && mouseY < yCardRock + cardHeightRock / 2 && mouseIsPressed || keyIsDown(49)) {
+  if (mouseX > xCardRock - cardWidth / 2 && mouseX < xCardRock + cardWidth / 2 && mouseY > yCardRock - cardHeight / 2 && mouseY < yCardRock + cardHeight / 2 && mouseIsPressed || keyIsDown(49)) {
     state = "choseRock";
   }
 }
 
 function pressPaperCard() {
-  if (mouseX > xCardPaper - cardWidthPaper / 2 && mouseX < xCardPaper + cardWidthPaper / 2 && mouseY > yCardPaper - cardHeightPaper / 2 && mouseY < yCardPaper + cardHeightPaper / 2 && mouseIsPressed || keyIsDown(50)) {
+  if (mouseX > xCardPaper - cardWidth / 2 && mouseX < xCardPaper + cardWidth / 2 && mouseY > yCardPaper - cardHeight / 2 && mouseY < yCardPaper + cardHeight / 2 && mouseIsPressed || keyIsDown(50)) {
     state = "chosePaper";
   }
 }
 
 function pressScissorsCard() {
-  if (mouseX > xCardScissors - cardWidthScissors / 2 && mouseX < xCardScissors + cardWidthScissors / 2 && mouseY > yCardScissors - cardHeightScissors / 2 && mouseY < yCardScissors + cardHeightScissors / 2 && mouseIsPressed || keyIsDown(51)) {
+  if (mouseX > xCardScissors - cardWidth / 2 && mouseX < xCardScissors + cardWidth / 2 && mouseY > yCardScissors - cardHeight / 2 && mouseY < yCardScissors + cardHeight / 2 && mouseIsPressed || keyIsDown(51)) {
     state = "choseScissors";
   }
 }
