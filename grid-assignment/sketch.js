@@ -142,7 +142,7 @@ function gameState() {
   if (state === "play") {
     displayGrid();
     characterMovement();
-    overBorder();
+    // overBorder();
     interactFurniture();
   }
   // state - check if you got item already or not
@@ -269,26 +269,55 @@ function createEmptyGrid(cols, rows) {
 
 //////////////////// character movement ///////////////////////////////
 
+// function characterMovement() {
+//   // move character
+//   if (playerState === "move") {
+//     if (keyIsDown(87)){ //w
+//       playerY -= speed;
+//       image(spriteBack, playerX, playerY, spriteWidth, spriteHeight);
+//       spritePosition = "forward";
+//     }
+//     else if (keyIsDown(83)){ //s
+//       playerY += speed;
+//       image(spriteFront, playerX, playerY, spriteWidth, spriteHeight);
+//       spritePosition = "back";
+//     }
+//     else if (keyIsDown(65)){ //a
+//       playerX -= speed;
+//       image(spriteLeft, playerX, playerY, spriteWidth, spriteHeight);
+//       spritePosition = "left";
+//     }
+//     else if (keyIsDown(68)){ //d
+//       playerX += speed;
+//       image(spriteRight, playerX, playerY, spriteWidth, spriteHeight);
+//       spritePosition = "right";
+//     }
+//     else {
+//       keyReleased();
+//     }
+//   }
+// }
+
 function characterMovement() {
   // move character
   if (playerState === "move") {
     if (keyIsDown(87)){ //w
-      playerY -= speed;
+      tryMovingTo(playerY-=speed, playerX);
       image(spriteBack, playerX, playerY, spriteWidth, spriteHeight);
       spritePosition = "forward";
     }
     else if (keyIsDown(83)){ //s
-      playerY += speed;
+      tryMovingTo(playerY+=speed, playerX);
       image(spriteFront, playerX, playerY, spriteWidth, spriteHeight);
       spritePosition = "back";
     }
     else if (keyIsDown(65)){ //a
-      playerX -= speed;
+      tryMovingTo(playerY, playerX-=speed);
       image(spriteLeft, playerX, playerY, spriteWidth, spriteHeight);
       spritePosition = "left";
     }
     else if (keyIsDown(68)){ //d
-      playerX += speed;
+      tryMovingTo(playerY, playerX+=speed);
       image(spriteRight, playerX, playerY, spriteWidth, spriteHeight);
       spritePosition = "right";
     }
@@ -331,6 +360,20 @@ function overBorder() {
   // check if over bottom
   if (playerY > height-cellSize*1.7) {
     playerY = playerY - speed;
+  }
+}
+
+function tryMovingTo(newX, newY) {
+  if (newX >= 0 && newY >= 0 && newX < gridDimensions && newY < gridDimensions) {
+    if (grid[newY][newX] === 0) {
+      playerX = newX;
+      playerY = newY;
+    }
+    else if (grid[newY][newX] === 1) {
+      if (spritePosition === "forward") {
+        playerY = playerY+(speed+3);
+      }
+    }
   }
 }
 
