@@ -19,7 +19,7 @@ let spriteWidth, spriteHeight, spriteFront, spriteBack, spriteLeft, spriteRight;
 let spritePosition = "back";
 
 // tile variables
-let ground, wall, door, poster, room, boxes;
+let ground, wall, door, room, boxes;
 
 // furniture variables
 let chest, bed, cage;
@@ -64,7 +64,6 @@ function preload() {
   ground = loadImage("assets/floor.png");
   wall = loadImage("assets/wall.png");
   door = loadImage("assets/door.png");
-  poster = loadImage("assets/poster.png");
   boxes = loadImage("assets/box.png");
   chest = loadImage("assets/chest.png");
   bed = loadImage("assets/bed.png");
@@ -248,10 +247,6 @@ function displayGrid() {
       // chest
       if (grid[y][x] === "5") {
         image(chest, x*cellSize, y*cellSize, cellSize, cellSize);
-      }
-      // poster
-      if (grid[y][x] === "#") {
-        image(poster, x*cellSize, y*cellSize, cellSize, cellSize);
       }
       // boxes
       if (grid[y][x] === "*") {
